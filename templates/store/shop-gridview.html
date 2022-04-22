@@ -1,0 +1,253 @@
+{% load static %}
+<div class="grid-products grid--view-items">
+    <input type="hidden" name="list-id" id="listid" value="1">
+    {% if products  %}
+    <div class="row">
+        {% for product in products %}
+        <div class="col-6 col-sm-6 col-md-4 col-lg-3 item">
+            <!-- start product image -->
+            <!-- start product image -->
+            <div class="product-image">
+                <!-- start product image -->
+                <a href="#">
+                    <!-- image -->
+                    <img class="primary blur-up lazyload" data-src="{{product.get_variation.image_first}}"
+                         src="{{product.get_variation.image_first}}" alt="image" title="product">
+                    <!-- End image -->
+                    <!-- Hover image -->
+                    <img class="hover blur-up lazyload" data-src="{{product.get_variation.image_last}}" src="{{product.get_variation.image_last}}" alt="image"
+                         title="product">
+                    <!-- End hover image -->
+                    <!-- product label -->
+                    <div class="product-labels rectangular">
+                        {% if product.get_variation.discount_percentage %}
+                            <span class="lbl on-sale">-{{product.get_variation.discount_percentage}}%</span>
+                        {% endif %}
+                        {% if product.get_variation.label == 'new' %}
+                            <span class="lbl pr-label1">{{product.get_variation.get_label_display}}</span>
+                        {% elif product.get_variation.label == 'sale' %}
+                            <span class="lbl pr-label2">{{product.get_variation.get_label_display}}</span>
+                        {% elif product.get_variation.label == 'hot' %}
+                            <span class="lbl pr-label3">{{product.get_variation.get_label_display}}</span>
+                        {% endif %}
+                    </div>
+                    <!-- End product label -->
+                </a>
+                <!-- end product image -->
+
+                <!-- Start product button -->
+                <div class="variants add">
+                    <a href="{{ product.get_url }}" class="btn btn-addto-cart" type="button" tabindex="0">View Details</a>
+                </div>
+
+                <div class="button-set">
+                    {% if user %}
+                    {% if product.is_in_wishlist %}
+                    <div class="wishlist-btn mt-1">
+                        <a name="wishlistElements" class="wishlist add-to-wishlist"
+                           data-product="{{ product.id }}" href="#">
+                            <i class="icon anm anm-heart"></i>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="wishlist-btn mt-1">
+                        <a name="wishlistElements" class="wishlist add-to-wishlist"
+                           data-product="{{ product.id }}" href="#">
+                            <i class="icon anm anm-heart-l"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                <!-- end product button -->
+            </div>
+            <!-- end product image -->
+            <!--start product details -->
+            <div class="product-details text-center">
+                <!-- product name -->
+                <div class="product-name">
+                    <a href="{{product.get_url}}">{{product.name}}</a>
+                </div>
+                <!-- End product name -->
+                <!-- product price -->
+                <div class="product-price">
+                    {% if product.get_variation.discount_price %}
+                        <span class="old-price">${{product.get_variation.price}}</span>
+                        <span class="price">${{product.get_variation.discount_price}}</span>
+                    {% else %}
+                        <span class="price">${{product.get_variation.price}}</span>
+                    {% endif %}
+                </div>
+                <!-- End product price -->
+
+                <div class="product-review">
+                    <span>
+                        <i class="fa fa-star{% if product.average_rating < 0.5 %}-o{% elif product.average_rating >= 0.5 and product.average_rating < 1 %}-half-o {% endif %}"
+                            aria-hidden="true"></i>
+                         <i class="fa fa-star{% if product.average_rating < 1.5 %}-o{% elif product.average_rating >= 1.5 and product.average_rating < 2 %}-half-o {% endif %}"
+                            aria-hidden="true"></i>
+                         <i class="fa fa-star{% if product.average_rating < 2.5 %}-o{% elif product.average_rating >= 2.5 and product.average_rating < 3 %}-half-o {% endif %}"
+                            aria-hidden="true"></i>
+                         <i class="fa fa-star{% if product.average_rating < 3.5 %}-o{% elif product.average_rating >= 3.5 and product.average_rating < 4 %}-half-o {% endif %}"
+                            aria-hidden="true"></i>
+                         <i class="fa fa-star{% if product.average_rating < 4.5 %}-o{% elif product.average_rating >= 4.5 and product.average_rating < 5 %}-half-o {% endif %}"
+                            aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <!-- Variant -->
+                <ul class="swatches" style=" cursor: pointer;">
+                    {% for image in product.get_product_color %}
+                    <li class="swatch medium rounded"><a href={{image.get_url}}><img
+                            src="{{image.image_first}}" alt="image"/></a></li>
+                    {% endfor %}
+                </ul>
+                <!-- End Variant -->
+            </div>
+            <!-- End product details -->
+        </div>
+        {% endfor %}
+        <hr class="clear">
+        <div class="pagination">
+            <ul>
+                {% if products.has_previous %}
+                <li class="next mr-2 active"><a href="#" id="previous_button"><i class="fa fa-caret-left" aria-hidden="true"></i></a></li>
+                {% else %}
+                <li class="next mr-2"><a href="#" id="previous_button" disabled><i class="fa fa-caret-left" aria-hidden="true"></i></a></li>
+                {% endif %}
+                <li class="active"><a href="#" id="number">{{ products.number }} </a> of {{ products.paginator.num_pages }}</li>
+                {% if products.has_next %}
+                <li class="next ml-2 active"><a href="#" id="next_button"><i class="fa fa-caret-right" aria-hidden="true"></i></a></li>
+                {% else %}
+                <li class="next ml-2"><a href="#" id="next_button" disabled><i class="fa fa-caret-right" aria-hidden="true"></i></a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% else %}
+    <h2 class="text-center">No Products to Show</h2>
+    {% endif %}
+</div>
+
+<!-- Including Javascript -->
+<script>
+
+(function($) {
+    // Start of use strict
+    'use strict';
+
+    /*-------------------------------
+      21. Height Product Grid Image
+    ----------------------------------*/
+    function productGridView() {
+        var gridRows = [];
+        var tempRow = [];
+        productGridElements = $('.grid-products .item');
+        productGridElements.each(function(index) {
+            if ($(this).css('clear') != 'none' && index != 0) {
+                gridRows.push(tempRow);
+                tempRow = [];
+            }
+            tempRow.push(this);
+
+            if (productGridElements.length == index + 1) {
+                gridRows.push(tempRow);
+            }
+        });
+
+        $.each(gridRows, function() {
+            var tallestHeight = 0;
+            var tallestHeight1 = 0;
+            $.each(this, function() {
+                $(this).find('.product-image > a').css('height', '');
+                elHeight = parseInt($(this).find('.product-image').css('height'));
+                if (elHeight > tallestHeight) { tallestHeight = elHeight; }
+            });
+
+            $.each(this, function() {
+                if ($(window).width() > 768) {
+                    $(this).find('.product-image > a').css('height', tallestHeight);
+                }
+            });
+        });
+    }
+
+    function load_more() {
+        $(".product-load-more .item").slice(0, 16).show();
+        $(".loadMore").on('click', function(e) {
+            e.preventDefault();
+            $(".product-load-more .item:hidden").slice(0, 4).slideDown();
+            if ($(".product-load-more .item:hidden").length == 0) {
+                $(".infinitpagin").html('<div class="btn loadMore">no more products</div>');
+            }
+        });
+    }
+    load_more();
+
+
+})(jQuery);
+
+$('#next_button').on('click', function (event) {
+    event.preventDefault();
+    filter = document.getElementById("amount").value;
+    var arrcolor = [];
+    $.each($("input[name='color-filter']:checked"), function(){
+        arrcolor.push($(this).val());
+    });
+    var arrsize = [];
+    $.each($("input[name='size-filter']:checked"), function(){
+        arrsize.push($(this).val());
+    });
+    var valParamColor = JSON.stringify(arrcolor);
+    var valParamSize = JSON.stringify(arrsize);
+    {% if products.has_next %}
+        page = {{ products.next_page_number }};
+    {% endif %}
+    $.ajax({
+        type: "GET",
+        url: window.location.href,
+        data: {
+            page: page,
+            listid: $('#listid').val(),
+            filter: filter,
+            colorlist: valParamColor,
+            sizelist: valParamSize
+        },
+        success: function (data) {
+            $('#appendListView').html(data.rendered_store);
+        },
+    });
+});
+
+$('#previous_button').on('click', function (event) {
+    event.preventDefault();
+    filter = document.getElementById("amount").value;
+    var arrcolor = [];
+    $.each($("input[name='color-filter']:checked"), function(){
+        arrcolor.push($(this).val());
+    });
+    var arrsize = [];
+    $.each($("input[name='size-filter']:checked"), function(){
+        arrsize.push($(this).val());
+    });
+    var valParamColor = JSON.stringify(arrcolor);
+    var valParamSize = JSON.stringify(arrsize);
+    {% if products.has_previous %}
+        page = {{ products.previous_page_number }};
+    {% endif %}
+    $.ajax({
+        type: "GET",
+        url: window.location.href,
+        data: {
+            page: page,
+            listid: $('#listid').val(),
+            filter: filter,
+            colorlist: valParamColor,
+            sizelist: valParamSize
+        },
+        success: function (data) {
+            $('#appendListView').html(data.rendered_store);
+        },
+    });
+});
+</script>

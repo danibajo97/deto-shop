@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- ========================= SECTION CONTENT ========================= -->
+
+<div class="container">
+    <h2 class="my-4 border-bottom pb-1">Dashboard</h2>
+    <div class="row">
+        {% include 'includes/dashboard_sidebar.html' %}
+        <div class="col-md-4">
+            <article class="card">
+                <header class="card-header">
+                    <strong class="d-inline-block mr-3">Logged in as:</strong>
+                    <span>{{ user.first_name }} {{ user.last_name }}</span>
+                </header>
+                <div class="card-body">
+                    <div class="card" style="text-align: center;">
+                        <div class="card-body">
+                            <img src="{{ user.profile_picture.url }}" alt="User Profile Picture"
+                                 width="50" height="50" style="border-radius:50px;">
+                            <p class="mb-0">{{ user.email }}</p>
+                            <p>{{ user.phone_number }}</p>
+                        </div>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Orders</h5>
+                            <h4>{{ orders_count }}</h4>
+                            <a href="{% url 'my_orders' %}">View Orders</a>
+                        </div>
+                    </div>
+                </div> <!-- card-body .// -->
+            </article> <!-- order-group.// -->
+        </div>
+        <div class="col-md-5">
+            <!-- Featured Products -->
+            <article class="card">
+                <header class="card-header">
+                    <strong class="d-inline-block mr-3">Orders by Month:</strong>
+                </header>
+                <div class="card-body">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </article>
+        </div>
+    </div> <!-- row.// -->
+</div>
+
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript">
+        const labels = {{monthNumber|safe}};
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Orders By Month',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: {{totalOrders}},
+            }]
+        };
+        const config = {
+            type: 'bar',
+            data,
+            options: {}
+        };
+        var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+{% endblock %}

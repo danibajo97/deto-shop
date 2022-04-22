@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Insomnio | {{ title }}</title>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- Slick -->
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <!-- nouislider -->
+    <link rel="stylesheet" href="{% static 'css/nouislider.min.css' %}">
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <!-- Custom stlylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Old Styles -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rating.css' %}">
+    <!-- custom style -->
+    <link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)"/>
+    <style>
+        /* If the screen size is 1200px wide or more, set the font-size to 80px */
+        @media (min-width: 1200px) {
+            .responsive-font-example {
+                font-size: 80px;
+            }
+        }
+
+        /* If the screen size is smaller than 1200px, set the font-size to 80px */
+        @media (max-width: 1199.98px) {
+            .responsive-font-example {
+                font-size: 30px;
+            }
+        }
+    </style>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+
+    <!-- jQuery Plugins -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+</head>
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+{% include 'includes/header.html' %}
+{% include 'includes/navbar.html' %}
+{% block content %}{% endblock content %}
+{% include 'includes/footer.html' %}
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/nouislider.min.js' %}"></script>
+    <script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+    <script src="{% static 'sweetalert/sweetalert.min.js' %}"></script>
+    <script src="{% static 'js/custom-alerts.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+{% if messages %}
+    {% for message in messages %}
+        console.log({{ message.tags }})
+        <script>
+            swal({
+                {% if message.tags == "danger"%}
+                    title: "Error",
+                    icon: "error",
+                {% elif message.tags == "success" %}
+                    title: "Success",
+                    icon: "success",
+                {% else %}
+                    title: "Info",
+                    icon: "info",
+                {% endif %}
+                text: "{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: {% endif %}{{ message }}",
+                button: "Ok",
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+<script type="text/javascript">
+    $(document).on('change', '#post-form', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "ajaxcolor" %}',
+            data: {
+                productid: $('#productid').val(),
+                size: $('#size').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            data_type: 'html',
+            success: function (data) {
+                console.log("success");
+                $('#appendHere').html(data.rendered_table);
+            },
+            error: function (data) {
+                alert("Got an error dude " + data);
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% load static %}
+<!-- Categories Section Begin -->
+<section class="categories">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 p-0">
+                <div class="categories__item categories__large__item set-bg"
+                     data-setbg="{{categories_main.image.url}}">
+                    <div class="categories__text">
+                        <h1>{{ categories_main.name }}</h1>
+                        <p>{{ categories_main.description }}</p>
+                        <a href="{{ categories_main.get_url }}">Shop now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    {% for category in categories_secondary %}
+                    <div class="col-lg-6 col-md-6 col-sm-6 p-0">
+                        <div class="categories__item set-bg" data-setbg="{{category.image.url}}">
+                            <div class="categories__text">
+                                <h4>{{category.name}}</h4>
+                                <a href="{{category.get_url}}">Shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Categories Section End -->

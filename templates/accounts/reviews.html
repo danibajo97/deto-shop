@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="container my-4">
+    <!-- Featured Products -->
+    <h2 class="my-4 border-bottom pb-1">Reviews Items</h2>
+    <div class="row">
+        {% include 'includes/dashboard_sidebar.html' %}
+        <div class="col-md-9">
+            {% if reviews %}
+            <div class="table-responsive">
+                <table class="table-bordered table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Subject</th>
+                        <th>ReviewRating</th>
+                        <th>Created Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for review in reviews %}
+                    <tr>
+                        <td>
+                            <a href="{{review.product.get_url}}">{{review.product.name}}</a>
+                        </td>
+						<td>{{review.subject}}</td>
+                        {% if review.product.average_rating == 1 %}
+                        <td><i class="fa fa-star"></i></td>
+                        {% elif review.product.average_rating == 2 %}
+                        <td><i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></td>
+                        {% elif review.product.average_rating == 3 %}
+                        <td><i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></td>
+                        {% elif review.product.average_rating == 4 %}
+                        <td><i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></td>
+                        {% elif review.product.average_rating == 5 %}
+                        <td><i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i></td>
+                        {% elif review.product.average_rating == 0 %}
+                        <td><i class="fa fa-star-o empty"></i></td>
+						{% endif %}
+                        <td>{{review.created_at}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="container text-center">
+                <h4>You dont have reviews yeat</h4><br>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

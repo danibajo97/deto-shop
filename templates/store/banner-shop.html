@@ -1,0 +1,18 @@
+{% if categories %}
+<!--Collection Banner-->
+<div class="collection-header">
+    <div class="collection-hero">
+        <div class="collection-hero__image"><img class="blur-up lazyload" data-src="{{categories.image_large.url}}" src="{{categories.image_large.url}}" alt="{{categories.image_large.url}}" title="{{categories.image_large.url}}" /></div>
+        <div class="collection-hero__title-wrapper"><h1 class="collection-hero__title page-width">{{categories.name}}</h1></div>
+      </div>
+</div>
+{% elif brands %}
+<div class="collection-header">
+    <div class="collection-hero">
+        <div class="collection-hero__image"><img class="blur-up lazyload" data-src="{{brands.image_large.url}}" src="{{brands.image_large.url}}" alt="{{categories.image_large.url}}" title="{{categories.image_large.url}}" /></div>
+        <div class="collection-hero__title-wrapper"><h1 class="collection-hero__title page-width">{{brands.name}}</h1></div>
+      </div>
+</div>
+<!--End Collection Banner-->
+{% endif %}
+<br>

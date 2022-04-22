@@ -1,0 +1,161 @@
+{% load static %}
+<div class="product-details-img">
+    <div class="product-thumb">
+        <div id="gallery" class="product-dec-slider-2 product-tab-left">
+            {% if product %}
+            {% for picture in product.image.all %}
+            <a data-image="{{ picture.image.url }}"
+               data-zoom-image="{{ picture.image.url }}"
+               class="slick-slide slick-cloned" data-slick-index="-{{ picture.id }}" aria-hidden="true"
+               tabindex="-1">
+                <img class="blur-up lazyload"
+                     data-src="{{ picture.image.url }}"
+                     src="{{ picture.image.url }}" alt=""/>
+            </a>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="zoompro-wrap product-zoom-right pl-20">
+        <div class="zoompro-span">
+            {% if product %}
+            <img class="blur-up lazyload zoompro"
+                 data-zoom-image="{{ product.image_first }}"
+                 alt="" src="{{ product.image_first }}"/>
+            {% endif %}
+        </div>
+        <div class="product-labels">
+            {% if product.discount_percentage %}
+            <span class="lbl on-sale">-{{product.discount_percentage}}%</span>
+            {% endif %}
+            {% if product.label == 'new' %}
+            <span class="lbl pr-label1">{{product.get_label_display}}</span>
+            {% elif product.label == 'sale' %}
+            <span class="lbl pr-label2">{{product.get_label_display}}</span>
+            {% elif product.label == 'hot' %}
+            <span class="lbl pr-label3">{{product.get_label_display}}</span>
+            {% endif %}
+        </div>
+        <div class="product-buttons">
+            <a href="#" class="btn prlightbox" title="Zoom"><i
+                    class="icon anm anm-expand-l-arrows"
+                    aria-hidden="true"></i></a>
+        </div>
+    </div>
+    <div class="lightboximages">
+        {% if product %}
+        {% for picture in product.image.all %}
+        <a href="{{picture.image.url}}"
+           data-size="1462x2048"></a>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% comment %} <script src="{% static 'js/main.js' %}"></script> {% endcomment %}
+
+<!-- Photoswipe Gallery -->
+<script src="{% static 'js/vendor/photoswipe.min.js' %}"></script>
+<script src="{% static 'js/vendor/photoswipe-ui-default.min.js' %}"></script>
+<script>
+     
+    function product_thumb() {
+        $('.product-dec-slider-2').slick({
+            infinite: true,
+            slidesToShow: 5,
+            vertical: true,
+            slidesToScroll: 1,
+            centerPadding: '60px'
+        });
+    }
+    product_thumb();
+
+    function product_zoom() {
+        $(".zoompro").elevateZoom({
+            gallery: "gallery",
+            galleryActiveClass: "active",
+            zoomWindowWidth: 300,
+            zoomWindowHeight: 100,
+            scrollZoom: false,
+            zoomType: "inner",
+            cursor: "crosshair"
+        });
+    }
+    product_zoom();
+
+    $(function(){
+        var $pswp = $('.pswp')[0],
+            image = [],
+            getItems = function() {
+                var items = [];
+                $('.lightboximages a').each(function() {
+                    var $href   = $(this).attr('href'),
+                        $size   = $(this).data('size').split('x'),
+                        item = {
+                            src : $href,
+                            w: $size[0],
+                            h: $size[1]
+                        }
+                        items.push(item);
+                });
+                return items;
+            }
+        var items = getItems();
+    
+        $.each(items, function(index, value) {
+            image[index]     = new Image();
+            image[index].src = value['src'];
+        });
+        $('.prlightbox').on('click', function (event) {
+            event.preventDefault();
+          
+            var $index = $(".active-thumb").parent().attr('data-slick-index');
+            $index++;
+            $index = $index-1;
+    
+            var options = {
+                index: $index,
+                bgOpacity: 0.9,
+                showHideOpacity: true
+            }
+            var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+            lightBox.init();
+        });
+    });
+</script>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

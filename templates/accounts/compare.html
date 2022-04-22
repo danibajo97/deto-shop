@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2 class="my-4 border-bottom pb-1">Compare Items</h2>
+    <div class="row">
+        {% include 'includes/dashboard_sidebar.html' %}
+        <div class="col-9 col-sm-12 col-md-9 col-lg-9 main-col">
+            <div class="compare-page compare-page2">
+                {% if products %}
+                <div class="table-wrapper table-responsive" id="compare-table">
+                    <table class="table">
+                        <thead>
+                        <tr class="th-compare">
+                            {% for product in products%}
+                            <td valign="middle" class="item-row">
+                              <button type="button" class="remove-compare" id="remove-compare" data-product="{{ product.id }}"><i class="anm anm-times-l" aria-hidden="true"></i></button>
+                              <div class="grid-link__title">{{product.name}}</div>
+                              <div class="item-row"><img src="{{product.get_variation.image_first}}" alt="" class="featured-image"></div>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody id="table-compare">
+                        <tr>
+                            {% for product in products%}
+                            <td valign="middle" class="item-row">
+                                {% if product.get_variation.discount_price%}
+                                <div class="product-price product_price"><span>${{product.get_variation.discount_price}}</span></div>
+                                {% else %}
+                                <div class="product-price product_price"><span>${{product.get_variation.price}}</span></div>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            {% for product in products%}
+                            <th>Product Description</th>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            {% for product in products%}
+                            <td valign="middle" class="item-row">
+                              <p class="description-compare">{{product.description}}</p>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            {% for product in products%}
+                            <th>Availability</th>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            {% for product in products%}
+                            <td valign="middle" class="available-stock">
+                            {% if product.get_variation.stock%}
+                              <p>In stock</p>
+                              {% else %}
+                              <p>Not in stock</p>
+                              {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            {% for product in products%}
+                            <td valign="middle" align="center">
+                                <a href="{{product.get_url}}" title="View Details" class="btn btn-solid">View Details</a>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="container text-center">
+                    <h4>You dont have products to compare yeat</h4><br>
+                    <h6>Please add one <a href="{% url 'store' %}">Here</a></h6>
+                </div>
+                {% endif %}
+            </div>                  
+        </div>
+    </div>
+</div>
+{% endblock content %}

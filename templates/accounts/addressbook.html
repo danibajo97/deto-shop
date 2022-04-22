@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="container my-4">
+    <!-- Featured Products -->
+    <h2 class="my-4 border-bottom pb-1">Address Book <a href="{% url 'add_address' %}"
+        class="pull-right"><i class="fa fa-plus"></i> Add</a></h2>
+    <div class="row">
+        {% include 'includes/dashboard_sidebar.html' %}
+        <div class="col-md-9">
+            {% if addbook %}
+            <div class="row">
+                {% for add in addbook %}
+                <div class="col-md-4">
+                    <div class="card mb-3 {% if add.status %}border-secondary shadow{% endif %} address{{add.id}} address">
+                        <div class="card-body">
+                            <h5>Address</h5>
+                            <p class="card-text">{{add.full_address}}</p>
+                        </div>
+                        {% if add.status %}
+                        <div class="card-footer">
+                            <a class="btn check{{add.id}} check"><i class="fa fa-check-square text-success"></i></a>
+							<button style="display:none;" data-address="{{add.id}}" class="btn btn-sm btn-info activate-address btn{{add.id}} actbtn"><i class="fa fa-check-square-o"></i></button>
+                            <a href="{% url 'update_address' add.id %}" class="btn btn-outline-secondary float-right"><i
+                                    class="fa fa-edit"></i></a>
+                            <a class="remove-address btn btn-outline-danger float-right mr-2"><i
+                                    class="fa fa-trash" style="color: white;"></i></a>
+                            <div class="url"
+                                 style="font-size: 0">{% url 'delete_address' add.id %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="card-footer footer{{add.id}}">
+                            <a style="display:none;" class="btn check{{add.id}} check"><i class="fa fa-check-square text-success"></i></a>
+							<button data-address="{{add.id}}" class="btn btn-sm btn-info activate-address btn{{add.id}} actbtn"><i class="fa fa-check-square-o"></i></button>
+                            <a href="{% url 'update_address' add.id %}" class="btn btn-outline-secondary float-right"><i
+                                    class="fa fa-edit"></i></a>
+                            <a class="remove-address btn btn-outline-danger float-right mr-2"><i
+                                    class="fa fa-trash" style="color: white;"></i></a>
+                            <div class="url"
+                                 style="font-size: 0">{% url 'delete_address' add.id %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="container text-center">
+                <h4>You dont have address yeat</h4><br>
+                <h6>Please create one <a href="{% url 'add_address' %}">Here</a></h6>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

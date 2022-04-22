@@ -1,0 +1,19 @@
+<div class="checkout__order__product">
+    <ul>
+        <li>
+            <span class="top__text">Product</span>
+            <span class="top__text__right">Total</span>
+        </li>
+        {% for item in cart_items %}
+        <li>({{item.quantity}}) {{item.product.name}} <span>${{item.sub_total}}</span></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="checkout__order__total">
+    <ul>
+        {% if coupon %}
+        <li>Coupon <span>-${{coupon}}</span></li>
+        {% endif %}
+        <li>Total <span>${{grand_total}}</span></li>
+    </ul>
+</div>

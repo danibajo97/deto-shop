@@ -1,0 +1,36 @@
+<!--Product Tabs-->
+<div class="tabs-listing mt-4">
+    <ul class="product-tabs">
+        <li rel="tab1"><a class="tablink">Product Details</a></li>
+        <li rel="tab2"><a class="tablink">Product Reviews</a></li>
+        <li rel="tab3"><a class="tablink">Size Chart</a></li>
+    </ul>
+    <div class="tab-container">
+        <div id="tab1" class="tab-content">
+            <div class="product-description rte">
+                <h3>{{product.name}}</h3>
+                <p>{{product.description | safe}}</p>
+            </div>
+        </div>
+        <div id="tab2" class="tab-content">
+            {% include 'store/reviews.html'%}
+        </div>
+        <div id="tab3" class="tab-content">
+            <h4>Returns Policy</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eros justo, accumsan non dui sit
+                amet. Phasellus semper volutpat mi sed imperdiet. Ut odio lectus, vulputate non ex non, mattis
+                sollicitudin purus. Mauris consequat justo a enim interdum, in consequat dolor accumsan. Nulla
+                iaculis diam purus, ut vehicula leo efficitur at.</p>
+            <p>Interdum et malesuada fames ac ante ipsum primis in faucibus. In blandit nunc enim, sit amet
+                pharetra erat aliquet ac.</p>
+            <h4>Shipping</h4>
+            <p>Pellentesque ultrices ut sem sit amet lacinia. Sed nisi dui, ultrices ut turpis pulvinar. Sed
+                fringilla ex eget lorem consectetur, consectetur blandit lacus varius. Duis vel scelerisque
+                elit, et vestibulum metus. Integer sit amet tincidunt tortor. Ut lacinia ullamcorper massa, a
+                fermentum arcu vehicula ut. Ut efficitur faucibus dui Nullam tristique dolor eget turpis
+                consequat varius. Quisque a interdum augue. Nam ut nibh mauris.</p>
+        </div>
+    </div>
+</div>
+<!--End Product Tabs-->
+

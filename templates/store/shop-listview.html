@@ -1,0 +1,135 @@
+<div class="list-view-items grid--view-items">
+    <input type="hidden" name="list-id" id="listid" value="2">
+    {% if products  %}
+    {% for product in products %}
+    <!--ListView Item-->
+    <div class="list-product list-view-item">
+        <div class="list-view-item__image-column">
+            <div class="list-view-item__image-wrapper">
+                <!-- Image -->
+                <a href="{{ product.get_url }}"><img class="list-view-item__image blur-up lazyload" data-src="{{product.get_variation.image_first}}" src="{{product.get_variation.image_first}}" alt="image" title="product"></a>
+                <!-- End Image -->
+            </div>
+        </div>
+        <div class="list-view-item__title-column">
+            <div class="h4 grid-view-item__title"><a href="product-layout-2.html">{{ product.name }}</a></div>
+            <!-- Product Review -->
+            <p class="product-review">
+                <span>
+                    <i class="fa fa-star{% if product.average_rating < 0.5 %}-o{% elif product.average_rating >= 0.5 and product.average_rating < 1 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                     <i class="fa fa-star{% if product.average_rating < 1.5 %}-o{% elif product.average_rating >= 1.5 and product.average_rating < 2 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                     <i class="fa fa-star{% if product.average_rating < 2.5 %}-o{% elif product.average_rating >= 2.5 and product.average_rating < 3 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                     <i class="fa fa-star{% if product.average_rating < 3.5 %}-o{% elif product.average_rating >= 3.5 and product.average_rating < 4 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                     <i class="fa fa-star{% if product.average_rating < 4.5 %}-o{% elif product.average_rating >= 4.5 and product.average_rating < 5 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                </span>
+            </p>
+            <!-- End Product Review -->
+            <!-- Sort Description -->
+            <p>{{product.description | safe}}</p>
+            <!-- End Sort Description -->
+            <!-- Price -->
+            <p class="product-price grid-view-item__meta">
+                {% if product.get_variation.discount_price %}
+                    <span class="old-price">${{product.get_variation.price}}</span>
+                    <span class="price">${{product.get_variation.discount_price}}</span>
+                {% else %}
+                    <span class="price">${{product.get_variation.price}}</span>
+                {% endif %}
+            </p>
+            <!-- End Price -->
+            <form class="variants">
+                <a href="{{ product.get_url }}" class="btn btn-addto-cart" type="button" tabindex="0">View Details</a>
+            </form>
+        </div>
+    </div>
+    <!--End ListView Item-->
+    {% endfor %}
+    <div class="pagination">
+        <ul>
+            {% if products.has_previous %}
+            <li class="next mr-2 active"><a href="#" id="previous_button"><i class="fa fa-caret-left" aria-hidden="true"></i></a></li>
+            {% else %}
+            <li class="next mr-2"><a href="#" id="previous_button" disabled><i class="fa fa-caret-left" aria-hidden="true"></i></a></li>
+            {% endif %}
+            <li class="active"><a href="#" id="number">{{ products.number }} </a> of {{ products.paginator.num_pages }}</li>
+            {% if products.has_next %}
+            <li class="next ml-2 active"><a href="#" id="next_button"><i class="fa fa-caret-right" aria-hidden="true"></i></a></li>
+            {% else %}
+            <li class="next ml-2"><a href="#" id="next_button" disabled><i class="fa fa-caret-right" aria-hidden="true"></i></a></li>
+            {% endif %}
+        </ul>
+    </div>
+    {% else %}
+    <h2 class="text-center">No Products to Show</h2> 
+    {% endif %}
+</div>
+<script>
+    $('#next_button').on('click', function (event) {
+        event.preventDefault();
+        filter = document.getElementById("amount").value;
+        var arrcolor = [];
+        $.each($("input[name='color-filter']:checked"), function(){
+            arrcolor.push($(this).val());
+        });
+        var arrsize = [];
+        $.each($("input[name='size-filter']:checked"), function(){
+            arrsize.push($(this).val());
+        });
+        var valParamColor = JSON.stringify(arrcolor);
+        var valParamSize = JSON.stringify(arrsize);
+        {% if products.has_next %}
+            page = {{ products.next_page_number }};
+        {% endif %}
+        $.ajax({
+            type: "GET",
+            url: window.location.href,
+            data: {
+                page: page,
+                listid: $('#listid').val(),
+                filter: filter,
+                colorlist: valParamColor,
+                sizelist: valParamSize
+            },
+            success: function (data) {
+                $('#appendListView').html(data.rendered_store);
+            },
+        });
+    });
+        
+    $('#previous_button').on('click', function (event) {
+        event.preventDefault();
+        filter = document.getElementById("amount").value;
+        var arrcolor = [];
+        $.each($("input[name='color-filter']:checked"), function(){
+            arrcolor.push($(this).val());
+        });
+        var arrsize = [];
+        $.each($("input[name='size-filter']:checked"), function(){
+            arrsize.push($(this).val());
+        });
+        var valParamColor = JSON.stringify(arrcolor);
+        var valParamSize = JSON.stringify(arrsize);
+        {% if products.has_previous %}
+            page = {{ products.previous_page_number }};
+        {% endif %}
+        $.ajax({
+            type: "GET",
+            url: window.location.href,
+            data: {
+                page: page,
+                listid: $('#listid').val(),
+                filter: filter,
+                colorlist: valParamColor,
+                sizelist: valParamSize
+            },
+            success: function (data) {
+                $('#appendListView').html(data.rendered_store);
+            },
+        });
+    });
+</script>

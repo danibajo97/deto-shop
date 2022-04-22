@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- HOME -->
+<div id="home">
+    <!-- container -->
+    <div class="container">
+        <!-- home wrap -->
+        <div class="home-wrap">
+            <!-- home slick -->
+            <div id="home-slick">
+                <!-- banner -->
+                {% for slide in slides %}
+                <div class="banner banner-1">
+                    <img src="{{ slide.image.url }}">
+                    <div class="banner-caption text-center">
+                        <h1>{{slide.caption1}}</h1>
+                        <h3 class="white-color font-weak">{{slide.caption2}}</h3>
+                        <a hrf="{{slide.link}}" class="btn primary-btn">Shop Now</a>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- /banner -->
+            </div>
+            <!-- /home slick -->
+        </div>
+        <!-- /home wrap -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /HOME -->
+{% include 'includes/categories-section.html' %}
+{% include 'includes/deals-section.html' %}
+{% comment %} {% include 'includes/trending-section.html' %}
+{% include 'includes/topselling-section.html' %} {% endcomment %}
+{% endblock %}

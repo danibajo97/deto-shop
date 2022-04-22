@@ -1,0 +1,22 @@
+<!--Home slider-->
+<div class="slideshow slideshow-wrapper pb-section sliderFull">
+    <div class="home-slideshow">
+        {% for slide in slides %}
+        <div class="slide">
+            <div class="blur-up lazyload bg-size">
+                <img class="blur-up lazyload bg-img" data-src="{{ slide.image.url }}" src="{{ slide.image.url }}" alt="{{ slide.caption1 }}" title="{{ slide.caption1 }}" />
+                <div class="slideshow__text-wrap slideshow__overlay classic bottom">
+                    <div class="slideshow__text-content bottom">
+                        <div class="wrap-caption center">
+                                <h2 class="h1 mega-title slideshow__title">{{ slide.caption1 }}</h2>
+                                <span class="mega-subtitle slideshow__subtitle">{{ slide.caption2 }}</span>
+                                <a hrf="{{slide.link}}" class="btn primary-btn">Shop Now</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!--End Home slider-->

@@ -1,0 +1,87 @@
+{% load static %}
+<!--Minicart Popup-->
+<div class="block block-cart">
+    <ul class="mini-products-list">
+        {% if cart_items %}
+        {% for item in cart_items %}
+        <li class="item">
+            <a class="product-image" href="{{item.variations.get_url}}">
+                <img src="{{item.variations.image_first}}"
+                     alt="{{item.product.name}}" title=""/>
+            </a>
+            <div class="product-details">
+                <a href="#" class="remove remove_product" product_url={% url 'remove_cart' item.id %} product_id={{item.id}}>
+                    <i class="anm anm-times-l" aria-hidden="true"></i></a>
+                <a class="pName" href="{{item.variations.get_url}}">{{item.product.name}}</a>
+                <div class="variant-cart">{{item.variations.color.name}} / {{item.variations.size.code}}</div>
+                <div class="wrapQtyBtn">
+                    <div class="qtyField">
+                        <span class="label">Qty: {{item.quantity}}</span>
+                    </div>
+                </div>
+                <div class="priceRow">
+                    <div class="product-price">
+                        {% if item.variations.discount_price %}
+                            <span class="money">${{item.variations.discount_price}}</span>
+                        {% else %}
+                            <span class="money">${{item.variations.price}}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        {% else %}
+            <div class="total-in text-center">
+                <img src="{% static 'img/logo/cart-empty.png' %}" alt="Empty Cart Picture"
+                    width="50" height="50"><br>
+                <span class="label"><b>There is no products in your cart</b></span><br>
+                <span class="label">Please go to the Shop and add some products</span>
+            </div>
+            <hr>
+        {% endif %}
+    </ul>
+    <div class="total">
+        {% if cart_items %}
+        <div class="total-in">
+            <span class="label">Cart Subtotal:</span><span class="product-price"><span
+                class="money">${{total_paid}}</span></span>
+        </div>
+        <div class="buttonSet text-center">
+            <a href="{% url 'cart' %}" class="btn btn-secondary btn--small">View Cart</a>
+            <a href="{% url 'checkout' %}" class="btn btn-secondary btn--small">Checkout</a>
+        </div>
+        {% else %}
+        <div class="buttonSet text-center">
+            <a href="{% url 'store' %}" class="btn btn-secondary btn--small">Go to Store</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<!--EndMinicart Popup-->
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/vendor/wow.min.js' %}"></script>
+<script>
+    $('.remove_product').click(function (event) {
+        event.preventDefault();
+        var cart_id = $(this).attr("product_id").toString();
+        var url = $(this).attr("product_url").toString();
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: {
+                cart_id: cart_id
+            },
+            success: function (data) {
+                cart_count = data.total_items;
+                $('#header-cart').html(data.data.rendered_table);
+                $('#appendCart').html(data.data.rendered_cart);
+                document.getElementById("CartCount").innerHTML = cart_count;
+                document.getElementById("total_items").innerHTML = cart_count;
+            },
+            error: function (data) {
+
+            }
+        })
+    });
+</script>

@@ -1,0 +1,51 @@
+<form method="post" id="only-post-size"
+      accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+    <div class="swatch clearfix swatch-1-{{product.slug}} option2-{{product.slug}}" data-option-index="1">
+        <div class="product-form__item">
+            <a class="mb-4" href=""> See all Variations </a>
+            <label class="header">Size: <span class="slVariant" id="size-selected">{{variant.size.name}}</span></label>
+            {% for variation in product.get_product_size %}
+            <div data-value="{{variation.size.id}}" class="swatch-element {{variation.size.code}}-{{product.slug}}"
+                 available name="size" id="size">
+                <input class="swatchInput" id="swatch-1-{{variation.size.code}}-{{product.slug}}" type="radio"
+                       name="size" value="{{variation.size.name}}" {% if variant.id == variation.id %} checked {% endif %}>
+                <label class="swatchLbl medium rectangle" for="swatch-1-{{variation.size.code}}-{{product.slug}}"
+                       title="{{variation.size.code}}-{{product.slug}}">{{variation.size.code}}</label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</form>
+<script>
+    window.onload = function(){
+        size_name = document.querySelector('[name="size"]:checked').value,
+            document.getElementById("size-selected").innerHTML = size_name;
+            document.getElementById("final-size-selected").innerHTML = size_name;
+            $.ajax({
+                type: 'POST',
+                url: '{% url "ajaxprice" %}',
+                data: {
+                    productid: $('#productid').val(),
+                    size : document.querySelector('[name="size"]:checked').value,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                data_type: 'html',
+                success: function (data) {
+                    $('#add-cart-variation').html(data.rendered_table);
+                    $('#appendGallery').html(data.rendered_gallery);
+                },
+                error: function (data) {
+                    swal({
+                        title: "Upss!",
+                        icon: "error",
+                        text: "There is a problem!..."+ data,
+                        type: "error"
+                    });
+                }
+            });
+    };
+</script>

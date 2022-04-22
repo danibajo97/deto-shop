@@ -1,0 +1,235 @@
+{% load static %}
+<form method="post" id="post-size"
+      accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+    <div class="swatch clearfix swatch-1-{{product.slug}} option2-{{product.slug}}" data-option-index="1">
+        <div class="product-form__item">
+            <label class="header">Size: <span class="slVariant" id="size-selected">{{variant.size.name}}</span></label>
+            {% for variation in product.get_product_size %}
+            <div data-value="{{variation.size.id}}" class="swatch-element {{variation.size.code}}-{{product.slug}}"
+                 available name="size" id="size">
+                <input class="swatchInput" id="swatch-1-{{variation.size.code}}-{{product.slug}}" type="radio"
+                       name="size" value="{{variation.size.name}}" {% if variant.size.id == variation.size.id %} checked {% endif %}>
+                <label class="swatchLbl medium rectangle" for="swatch-1-{{variation.size.code}}-{{product.slug}}"
+                       title="{{variation.size.code}}-{{product.slug}}">{{variation.size.code}}</label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</form>
+<br>
+<form method="post" id="post-color"
+      accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="swatch clearfix swatch-0-{{product.slug}} option1-{{product.slug}}" data-option-index="0" id="appendColor">
+        <div class="product-form__item">
+            <label class="header">Color: <span class="slVariant" id="color-selected">{{variant.color.name}}</span></label>
+            {% for variation in variations %}
+            <div data-value="{{variation.color.id}}" class="swatch-element color {{variation.color.name}}-{{product.slug}}" 
+            available name="color" id="color">
+                <input class="swatchInput" id="swatch-0-{{variation.color.name}}-{{product.slug}}" type="radio" name="color"
+                       value="{{variation.color.name}}" {% if variant.color.id == variation.color.id %} checked {% endif %}>
+                <label class="swatchLbl color medium rectangle" for="swatch-0-{{variation.color.name}}-{{product.slug}}"
+                       style="{% if variation.image_first %}background-image:url({{variation.image_first}});{% else %}background-color:{{variation.color.code}};{% endif %}"
+                       title="{{variation.color.name}}-{{product.slug}}"></label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</form>
+<script src="{% static 'js/vendor/jquery-3.3.1.min.js' %}"></script>
+<script>
+    
+    $(document).on('change', '#post-color', function (e) {
+        color_name = document.querySelector('[name="color"]:checked').value,
+        document.getElementById("color-selected").innerHTML = color_name;
+        document.getElementById("final-color-selected").innerHTML = color_name;
+        e.preventDefault();
+        if (($("input:radio[name='size']:checked").length != 0) && ($("input:radio[name='color']:checked").length != 0 )) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "ajaxprice" %}',
+                data: {
+                    productid: $('#productid').val(),
+                    size : document.querySelector('[name="size"]:checked').value,
+                    color : document.querySelector('[name="color"]:checked').value,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                data_type: 'html',
+                success: function (data) {
+                    $('#add-cart-variation').html(data.rendered_table);
+                    $('#appendGallery').html(data.rendered_gallery);
+                },
+                error: function (data) {
+                    swal({
+                        title: "Upss!",
+                        icon: "error",
+                        text: "There is a problem!..."+ data,
+                        type: "error"
+                    });
+                }
+            });
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "ajaxprice" %}',
+                data: {
+                    productid: $('#productid').val(),
+                    color : document.querySelector('[name="color"]:checked').value,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                data_type: 'html',
+                success: function (data) {
+                    $('#add-cart-variation').html(data.rendered_table);
+                    $('#appendGallery').html(data.rendered_gallery);
+                },
+                error: function (data) {
+                    swal({
+                        title: "Upss!",
+                        icon: "error",
+                        text: "There is a problem!..."+ data,
+                        type: "error"
+                    });
+                }
+            });
+        }
+    });
+
+    $(document).on('change', '#post-size', function (e) {
+        color_name = document.querySelector('[name="color"]:checked').value,
+        document.getElementById("color-selected").innerHTML = color_name;
+        document.getElementById("final-color-selected").innerHTML = color_name;
+        size_name = document.querySelector('[name="size"]:checked').value,
+        document.getElementById("size-selected").innerHTML = size_name;
+        document.getElementById("final-size-selected").innerHTML = size_name;
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "ajaxcolor" %}',
+            data: {
+                productid: $('#productid').val(),
+                size : document.querySelector('[name="size"]:checked').value,
+                color : document.querySelector('[name="color"]:checked').value,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            data_type: 'html',
+            success: function (data) {
+                $('#add-cart-variation').html(data.rendered_info);
+                $('#appendColor').html(data.rendered_table);
+                $('#appendGallery').html(data.rendered_gallery);
+            },
+            error: function (data) {
+                swal({
+                    title: "Upss!",
+                    icon: "error",
+                    text: "There is a problem!..."+ data,
+                    type: "error"
+                });
+            }
+        });
+    });
+
+    window.onload = color_size_selected;
+
+    function color_size_selected() {
+        color_name = document.querySelector('[name="color"]:checked').value,
+        document.getElementById("color-selected").innerHTML = color_name;
+        document.getElementById("final-color-selected").innerHTML = color_name;
+        size_name = document.querySelector('[name="size"]:checked').value,
+        document.getElementById("size-selected").innerHTML = size_name;
+        document.getElementById("final-size-selected").innerHTML = size_name;
+        console.log("PEPE")
+        $.ajax({
+            type: 'POST',
+            url: '{% url "ajaxcolor" %}',
+            data: {
+                productid: $('#productid').val(),
+                color : document.querySelector('[name="color"]:checked').value,
+                size : document.querySelector('[name="size"]:checked').value,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            data_type: 'html',
+            success: function (data) {
+                $('#add-cart-variation').html(data.rendered_info);
+                $('#appendColor').html(data.rendered_table);
+                $('#appendGallery').html(data.rendered_gallery);
+            },
+            error: function (data) {
+                swal({
+                    title: "Upss!",
+                    icon: "error",
+                    text: "There is a problem!..."+ data,
+                    type: "error"
+                });
+            }
+        });
+    };
+
+    window.onload = details_selected;
+
+    function details_selected() {
+        color_name = document.querySelector('[name="color"]:checked').value,
+        document.getElementById("color-selected").innerHTML = color_name;
+        document.getElementById("final-color-selected").innerHTML = color_name;
+        if (($("input:radio[name='size']:checked").length != 0) && ($("input:radio[name='color']:checked").length != 0 )) {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "ajaxprice" %}',
+                data: {
+                    productid: $('#productid').val(),
+                    size : document.querySelector('[name="size"]:checked').value,
+                    color : document.querySelector('[name="color"]:checked').value,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                data_type: 'html',
+                success: function (data) {
+                    $('#add-cart-variation').html(data.rendered_table);
+                    $('#appendGallery').html(data.rendered_gallery);
+                },
+                error: function (data) {
+                    swal({
+                        title: "Upss!",
+                        icon: "error",
+                        text: "There is a problem!..."+ data,
+                        type: "error"
+                    });
+                }
+            });
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '{% url "ajaxprice" %}',
+                data: {
+                    productid: $('#productid').val(),
+                    color : document.querySelector('[name="color"]:checked').value,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                data_type: 'html',
+                success: function (data) {
+                    $('#add-cart-variation').html(data.rendered_table);
+                    $('#appendGallery').html(data.rendered_gallery);
+                    //$('#add').prop('disabled', true);
+                },
+                error: function (data) {
+                    swal({
+                        title: "Upss!",
+                        icon: "error",
+                        text: "There is a problem!..."+ data,
+                        type: "error"
+                    });
+                }
+            });
+        }
+    };
+
+    
+</script>

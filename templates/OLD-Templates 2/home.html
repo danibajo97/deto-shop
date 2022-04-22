@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% include 'includes/categories.html' %}
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>New Products</h4>
+                </div>
+            </div>
+            {% if categories %}
+            <div class="col-lg-8 col-md-8">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">All</li>
+                    {% for category in categories %}
+                    <li data-filter=".{{ category.slug }}">{{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        <div class="row property__gallery">
+            {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mix {{product.category.slug}}">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{ product.product_image.url }}">
+                        {% if product.label %}
+                        <div class="label {{product.label}}">{{ product.get_label_display }}</div>
+                        {% endif %}
+                        <ul class="product__hover">
+                            <li><a href="{{ product.product_image.url }}" class="image-popup"><span
+                                    class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="{{ product.get_url }}">{{ product.name| truncatewords:"10" }}</a></h6>
+                        <div class="rating">
+                            {% if single_product.average_rating == 1 %}
+                            <i class="fa fa-star"></i>
+                            {% elif product.average_rating == 2 %}
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% elif product.average_rating == 3 %}
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% elif product.average_rating == 4 %}
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% elif product.average_rating == 5 %}
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            {% elif product.average_rating == 0 %}
+                            <i class="fa fa-star-o empty"></i>
+                            {% endif %}
+                        </div>
+                        <div class="product__price">{% if product.discount_price %} $
+                            {{ product.discount_price }}
+                            <span>${{ product.price }}</span>
+                            {% else %}${{ product.price }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+
+{% include 'includes/banner.html' %}
+
+<!-- Trend Section Begin -->
+<section class="trend spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="trend__content">
+                    <div class="section-title">
+                        <h4>Hot Trend</h4>
+                    </div>
+                    {% for product in products_trending %}
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="{{ product.logo_image.url }}" alt="{{ product.alt_text }}">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>{{ product.name | truncatewords:"10" }}</h6>
+                            <div class="rating">
+                                {% if single_product.average_rating == 1 %}
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 2 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 3 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 4 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 5 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 0 %}
+                                <i class="fa fa-star-o empty"></i>
+                                {% endif %}
+                            </div>
+                            <div class="product__price">{% if product.discount_price %} $
+                                {{ product.discount_price }}
+                                <span>${{ product.price }}</span>
+                                {% else %}${{ product.price }}{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="trend__content">
+                    <div class="section-title">
+                        <h4>Best seller</h4>
+                    </div>
+                    {% for product in products_topSelling %}
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="{{ product.logo_image.url }}" alt="{{ product.alt_text }}">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>{{ product.name| truncatewords:"10" }}</h6>
+                            <div class="rating">
+                                {% if single_product.average_rating == 1 %}
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 2 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 3 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 4 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 5 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 0 %}
+                                <i class="fa fa-star-o empty"></i>
+                                {% endif %}
+                            </div>
+                            <div class="product__price">{% if product.discount_price %} $
+                                {{ product.discount_price }}
+                                <span>${{ product.price }}</span>
+                                {% else %}${{ product.price }}{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="trend__content">
+                    <div class="section-title">
+                        <h4>Promotion</h4>
+                    </div>
+                    {% for product in products_promotion %}
+                    <div class="trend__item">
+                        <div class="trend__item__pic">
+                            <img src="{{ product.logo_image.url }}" alt="{{ product.alt_text }}">
+                        </div>
+                        <div class="trend__item__text">
+                            <h6>{{ product.name| truncatewords:"10" }}</h6>
+                            <div class="rating">
+                                {% if single_product.average_rating == 1 %}
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 2 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 3 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 4 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 5 %}
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                {% elif product.average_rating == 0 %}
+                                <i class="fa fa-star-o empty"></i>
+                                {% endif %}
+                            </div>
+                            <div class="product__price">{% if product.discount_price %} $
+                                {{ product.discount_price }}
+                                <span>${{ product.price }}</span>
+                                {% else %}${{ product.price }}{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Trend Section End -->
+
+{% include 'includes/social.html' %}
+
+{% include 'includes/services.html' %}
+
+{% endblock %}

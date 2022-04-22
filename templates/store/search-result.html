@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'store/banner-shop.html' %}
+<div class="container mt-4">
+    {% if products  %}
+    <div class="row">
+        <!--Main Content-->
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 main-col">
+           <h2 class="text-center">Products Found</h2>
+           <hr>
+
+            <div class="productList product-load-more">
+                
+                <div class="grid-products grid--view-items" id="appendListView">
+                    <input type="hidden" name="list-id" id="listid" value="1">
+                    <div class="row">
+                        {% for product in products %}
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-3 item">
+                            <!-- start product image -->
+                            <!-- start product image -->
+                            <div class="product-image">
+                                <!-- start product image -->
+                                <a href="#">
+                                    <!-- image -->
+                                    <img class="primary blur-up lazyload" data-src="{{product.get_variation.image_first}}"
+                                         src="{{product.get_variation.image_first}}" alt="image" title="product">
+                                    <!-- End image -->
+                                    <!-- Hover image -->
+                                    <img class="hover blur-up lazyload" data-src="{{product.get_variation.image_last}}" src="{{product.get_variation.image_last}}" alt="image"
+                                         title="product">
+                                    <!-- End hover image -->
+                                    <!-- product label -->
+                                    <div class="product-labels rectangular">
+                                        {% if product.get_variation.discount_percentage %}
+                                            <span class="lbl on-sale">-{{product.get_variation.discount_percentage}}%</span>
+                                        {% endif %}
+                                        {% if product.get_variation.label == 'new' %}
+                                            <span class="lbl pr-label1">{{product.get_variation.get_label_display}}</span>
+                                        {% elif product.get_variation.label == 'sale' %}
+                                            <span class="lbl pr-label2">{{product.get_variation.get_label_display}}</span>
+                                        {% elif product.get_variation.label == 'hot' %}
+                                            <span class="lbl pr-label3">{{product.get_variation.get_label_display}}</span>
+                                        {% endif %}
+                                    </div>
+                                    <!-- End product label -->
+                                </a>
+                                <!-- end product image -->
+
+                                <!-- Start product button -->
+                                <div class="variants add">
+                                    <a href="{{ product.get_url }}" class="btn btn-addto-cart" type="button" tabindex="0">View Details</a>
+                                </div>
+
+                                <div class="button-set">
+                                    <a href="javascript:void(0)" title="Quick View"
+                                       class="quick-view-popup quick-view" data-toggle="modal"
+                                       data-target="#content_{{product.slug}}">
+                                        <i class="icon anm anm-search-plus-r"></i>
+                                    </a>
+                                    <div class="wishlist-btn">
+                                        <a class="wishlist add-to-wishlist" href="wishlist.html">
+                                            <i class="icon anm anm-heart-l"></i>
+                                        </a>
+                                    </div>
+                                    <div class="compare-btn">
+                                        <a class="compare add-to-compare" href="compare.html"
+                                           title="Add to Compare">
+                                            <i class="icon anm anm-random-r"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- end product button -->
+                            </div>
+                            <!-- end product image -->
+                            <!--start product details -->
+                            <div class="product-details text-center">
+                                <!-- product name -->
+                                <div class="product-name">
+                                    <a href="{{product.get_url}}">{{product.name}}</a>
+                                </div>
+                                <!-- End product name -->
+                                <!-- product price -->
+                                <div class="product-price">
+                                    {% if product.get_variation.discount_price %}
+                                        <span class="old-price">${{product.get_variation.price}}</span>
+                                        <span class="price">${{product.get_variation.discount_price}}</span>
+                                    {% else %}
+                                        <span class="price">${{product.get_variation.price}}</span>
+                                    {% endif %}
+                                </div>
+                                <!-- End product price -->
+
+                                <div class="product-review">
+                                    <span>
+                                        <i class="fa fa-star{% if product.average_rating < 0.5 %}-o{% elif product.average_rating >= 0.5 and product.average_rating < 1 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 1.5 %}-o{% elif product.average_rating >= 1.5 and product.average_rating < 2 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 2.5 %}-o{% elif product.average_rating >= 2.5 and product.average_rating < 3 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 3.5 %}-o{% elif product.average_rating >= 3.5 and product.average_rating < 4 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 4.5 %}-o{% elif product.average_rating >= 4.5 and product.average_rating < 5 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                    </span>
+                                </div>
+
+                                <!-- Variant -->
+                                <ul class="swatches" style=" cursor: pointer;">
+                                    {% for image in product.get_product_color %}
+                                    <li class="swatch medium rounded"><a href={{image.get_url}}><img
+                                            src="{{image.image_first}}" alt="image"/></a></li>
+                                    {% endfor %}
+                                </ul>
+                                <!-- End Variant -->
+                            </div>
+                            <!-- End product details -->
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <!--End Main Content-->
+    </div>
+    {% else %}
+    <h2 class="text-center">No Products to Show</h2>            
+    {% endif %}
+</div>
+
+{% endblock %}

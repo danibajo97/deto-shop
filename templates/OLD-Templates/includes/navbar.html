@@ -1,0 +1,65 @@
+{% load static %}
+{% load mptt_tags %}
+<!-- NAVIGATION -->
+<div id="navigation">
+    <!-- container -->
+    <div class="container">
+        <div id="responsive-nav">
+            <!-- category nav -->
+            <div class="category-nav show-on-click">
+                <span class="category-header">Categories <i class="fa fa-list"></i></span>
+                <ul class="category-list">
+                    {% recursetree category_tree %}
+                    {% if node.is_leaf_node %}
+                    <li><a href="{{ node.get_url }}">{{ node.name }}</a></li>
+                    {% else %}
+                    <li class="dropdown side-dropdown"><a class="dropdown-toggle" data-toggle="dropdown"
+                                                          aria-expanded="true">{{ node.name }} <i
+                            class="fa fa-angle-right"></i></a>
+                        <div class="custom-menu">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-links">
+                                        <h3 class="list-links-title">{{ node.name }}</h3>
+                                        <a href="{{ children.get_url }}">{{ children.name }}</a>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 hidden-sm hidden-xs">
+                                    <a class="banner banner-2" href="{{ node.get_url }}">
+                                        <img src="{{ node.image.url }}" alt="">
+                                        <div class="banner-caption">
+                                            <h4 class="white-color text-center">{{ node.name }}</h4>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                    {% endrecursetree %}
+                </ul>
+            </div>
+            <!-- /category nav -->
+
+            <!-- menu nav -->
+            <div class="menu-nav">
+                <span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+                <ul class="menu-list">
+                    <li><a class="active" href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'store' %}">Shop</a></li>
+                    <li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown"
+                                                             aria-expanded="true">Brands <i class="fa fa-caret-down"></i></a>
+                        <ul class="custom-menu">
+                            {% for brand in brand_links %}
+                                <li><a href="{{ brand.get_url }}">{{ brand.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- menu nav -->
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /NAVIGATION -->

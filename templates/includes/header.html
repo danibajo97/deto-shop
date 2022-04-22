@@ -1,0 +1,194 @@
+{% load static %}
+{% load mptt_tags %}
+<!--Top Header-->
+<div class="top-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-10 col-sm-8 col-md-5 col-lg-4">
+                <p class="phone-no"><i class="anm anm-phone-s"></i> +440 0(111) 044 833</p>
+            </div>
+            <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
+                <div class="text-center"><p class="top-header_middle-text"> CenterZon Ecommerce</p></div>
+            </div>
+            <div class="col-2 col-sm-4 col-md-3 col-lg-4 text-right">
+                <span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
+                <ul class="customer-links list-inline">
+                    {% if user.id is None %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Create Account</a></li>
+                    {% else %}
+                    <div class="language-dropdown">
+                        {% if user.profile_picture%}
+                            <img class="mr-2" src="{{ user.profile_picture.url }}" style="height: 20px; border-radius: 50%">
+                        {% else %}
+                            <img class="mr-2" src="{% static 'img/profile/index.png' %}" style="height: 20px; border-radius: 50%">
+                        {% endif %}
+                        <span class="language-dd">My Account</span>
+                        <ul id="language" class="text-left">
+                            <li><a href="{% url 'dashboard' %}">My Account</a></li>
+                            <li><a href="{% url 'my_orders' %}">My Orders</a></li>
+                            <li><a href="{% url 'my_wishlist' %}">My Wishlist</a></li>
+                            {% comment %} <li><a href="{% url 'compare' %}">Compare</a></li> {% endcomment %}
+                            <li><a href="{% url 'my_reviews' %}">My Reviews</a></li>
+                            <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+                            <li><a href="{% url 'my_addressbook' %}">My Address Book</a></li>
+                            <li><a href="{% url 'change_password' %}">Change Password</a></li>
+                            <li><a href="{% url 'register' %}">Create An Account</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+                        <a href="{% url 'logout' %}" class="text-uppercase">Logout</a>
+                    </div>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Top Header-->
+
+<!--Header-->
+<div class="header-wrap {% if title == 'home' %} classicHeader {% endif %} animated d-flex">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <!--Desktop Logo-->
+            <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
+                <a href="index.html">
+                    <img src="{% static 'images/logo.svg' %}" alt="CenterZon Ecommerce"
+                         title="CenterZon Ecommerce"/>
+                </a>
+            </div>
+            <!--End Desktop Logo-->
+            <div class="col-2 col-sm-3 col-md-3 col-lg-8">
+                <div class="d-block d-lg-none">
+                    <button type="button" class="btn--link site-header__menu js-mobile-nav-toggle mobile-nav--open">
+                        <i class="icon anm anm-times-l"></i>
+                        <i class="anm anm-bars-r"></i>
+                    </button>
+                </div>
+                <!--Desktop Menu-->
+                <nav class="grid__item" id="AccessibleNav"><!-- for mobile -->
+                    <ul id="siteNav" class="site-nav medium center hidearrow">
+                        <li class="lvl1"><a href="{% url 'home' %}"><b>Home</b></a>
+                        </li>
+                        <li class="lvl1"><a href="{% url 'store' %}"><b>Store</b></a>
+                        </li>
+                        <li class="lvl1 parent dropdown"><a href="#">Brands <i class="anm anm-angle-down-l"></i></a>
+                            <ul class="dropdown">
+                                {% for brand in brand_links %}
+                                <li><a href="{{ brand.get_url }}" class="site-nav">{{ brand.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="lvl1 parent dropdown"><a href="#">Categories <i class="anm anm-angle-down-l"></i></a>
+                            <ul class="dropdown">
+                                {% recursetree category_tree %}
+                                {% if not node.is_leaf_node %}
+                                <li>
+                                  <a class="site-nav">{{ node.name }} <i class="anm anm-angle-right-l"></i></a>
+                                  <ul class="dropdown">
+                                      <li>{{ children }}</li>
+                                  </ul>
+                                </li>
+                                {% else %}
+                                <li><a href="{{ node.get_url }}" class="site-nav">{{ node.name }}</a></li>
+                                {% endif %}
+                                {% endrecursetree %}
+                                <li><a href="about-us.html" class="site-nav">About Us <span
+                                        class="lbl nm_label1">New</span> </a></li>
+                            </ul>
+                        </li>
+                        <li class="lvl1"><a href="{% url 'contact_me' %}"><b>Contact Us</b></a>
+                        </li>
+                        <li class="lvl1"><a href="{% url 'blog' %}"><b>Blog</b></a>
+                        </li>
+                        <li class="lvl1"><a href="{% url 'about_us' %}"><b>About Us</b></a>
+                        </li>
+                    </ul>
+                </nav>
+                <!--End Desktop Menu-->
+            </div>
+            <!--Mobile Logo-->
+            <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/images/logo.svg" alt="Belle Multipurpose Html Template"
+                             title="Belle Multipurpose Html Template"/>
+                    </a>
+                </div>
+            </div>
+            <!--Mobile Logo-->
+            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                <div class="site-cart">
+                    <a href="#;" class="site-header__cart" title="Cart">
+                        <i class="icon anm anm-bag-l"></i>
+                        <span id="CartCount" class="site-header__cart-count" data-cart-render="item_count">{{ cart_count }}</span>
+                    </a>
+                    <!--Minicart Popup-->
+                    <div id="header-cart" class="block block-cart">
+                        <ul class="mini-products-list">
+                            {% if cart_items %}
+                            {% for item in cart_items %}
+                            <li class="item">
+                                <a class="product-image" href="{{item.variations.get_url}}">
+                                    <img src="{{item.variations.image_first}}"
+                                         alt="{{item.product.name}}" title=""/>
+                                </a>
+                                <div class="product-details">
+                                    <a href="#" class="remove remove_product" product_id={{item.id}} product_url={% url 'remove_cart' item.id %}><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                    <a class="pName" href="{{item.variations.get_url}}">{{item.product.name}}</a>
+                                    <div class="variant-cart">{{item.variations.color.name}} / {{item.variations.size.code}}</div>
+                                    <div class="wrapQtyBtn">
+                                        <div class="qtyField">
+                                            <span class="label">Qty: {{item.quantity}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="priceRow">
+                                        <div class="product-price">
+                                            {% if item.variations.discount_price %}
+                                                <span class="money">${{item.variations.discount_price}}</span>
+                                            {% else %}
+                                                <span class="money">${{item.variations.price}}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <div class="total-in text-center">
+                                <img src="{% static 'img/logo/cart-empty.png' %}" alt="Empty Cart Picture"
+                                 width="50" height="50"><br>
+                                <span class="label"><b>There is no products in your cart</b></span><br>
+                                <span class="label">Please go to the Shop and add some products</span>
+                            </div>
+                            <hr>
+                            {% endif %}
+                        </ul>
+                        <div class="total">
+                            {% if cart_items %}
+                            <div class="total-in">
+                                <span class="label">Cart Subtotal:</span><span class="product-price"><span
+                                    class="money">${{total_paid}}</span></span>
+                            </div>
+                            <div class="buttonSet text-center">
+                                <a href="{% url 'cart' %}" class="btn btn-secondary btn--small">View Cart</a>
+                                <a href="{% url 'checkout' %}" class="btn btn-secondary btn--small">Checkout</a>
+                            </div>
+                            {% else %}
+                            <div class="buttonSet text-center">
+                                <a href="{% url 'store' %}" class="btn btn-secondary btn--small">Go to Store</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!--EndMinicart Popup-->
+                </div>
+                <div class="site-header__search">
+                    <button type="button" class="search-trigger"><i class="icon anm anm-search-l"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Header-->
+{% include 'includes/header-mobile.html' %}

@@ -1,0 +1,100 @@
+{% load static %}
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__close">+</div>
+    <ul class="offcanvas__widget">
+        <li><span class="icon_search search-switch"></span></li>
+        <li><a href="#"><span class="icon_heart_alt"></span>
+            <div class="tip">2</div>
+        </a></li>
+        <li><a href="{% url 'cart' %}"><span class="icon_bag_alt"></span>
+            {% if cart_count != 0 %}
+            <div class="tip">{{ cart_count }}</div>
+            {% endif %}
+        </a></li>
+    </ul>
+    <div class="offcanvas__logo">
+        <a href="{% url 'home' %}"><img src="{% static 'img/logo/insomnio.png' %}" alt=""></a>
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas__auth">
+        {% if user.id is None %}
+        <small class="title text-muted">Welcome guest!</small><br>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+        {% else %}
+        <small class="title text-success">Welcome {{ user.first_name }}</small><br>
+        <a href="{% url 'dashboard' %}">Dashboard</a> <span class="dark-transp"></span>
+        <a href="{% url 'logout' %}"> Logout</a>
+        {% endif %}
+    </div>
+</div>
+<!-- Offcanvas Menu End -->
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-2">
+                <div class="header__logo">
+                    <a href="{% url 'home' %}"><img src="{% static 'img/logo/insomnio.png' %}" alt=""></a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-7 text-center">
+                <nav class="header__menu">
+                    <ul>
+                        <li class="active"><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'store' %}">Shop</a></li>
+                        <li><a href="#">Categories</a>
+                            <ul class="dropdown">
+                                {% for category in links %}
+                                <li><a href="{{ category.get_url }}">{{ category.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li><a href="#">Brands</a>
+                            <ul class="dropdown">
+                                {% for brand in brand_links %}
+                                <li><a href="{{ brand.get_url }}">{{ brand.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__right">
+                    <div class="header__right__auth text-center">
+                        {% if user.id is None %}
+                        <small class="title text-muted">Welcome guest!</small><br>
+                        <a href="{% url 'login' %}">Login</a>
+                        <a href="{% url 'register' %}">Register</a>
+                        {% else %}
+                        <small class="title text-success">Welcome {{ user.first_name }}</small><br>
+                        <a href="{% url 'dashboard' %}">Dashboard</a>
+                        <a class="logout" style="cursor: pointer">Logout</a>
+                        {% endif %}
+                    </div>
+                    <a class="url" style="font-size: 0">{% url 'logout' %}</a>
+                    <ul class="header__right__widget">
+                        <li><span class="icon_search search-switch"></span></li>
+                        <li><a href="#"><span class="icon_heart_alt"></span>
+                            <div class="tip">2</div>
+                        </a></li>
+                        <li><a href="{% url 'cart' %}"><span class="icon_bag_alt"></span>
+                            {% if cart_count != 0 %}
+                            <div class="tip">{{ cart_count }}</div>
+                            {% endif %}
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->

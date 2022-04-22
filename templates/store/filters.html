@@ -1,0 +1,109 @@
+{% load mptt_tags %}
+<!--Sidebar-->
+<div class="col-12 col-sm-12 col-md-3 col-lg-3 sidebar filterbar">
+    <div class="closeFilter d-block d-md-none d-lg-none"><i class="icon icon anm anm-times-l"></i></div>
+    <div class="sidebar_tags">
+        <!--Categories-->
+        <div class="sidebar_widget categories filter-widget">
+            <div class="widget-title"><h2>Categories</h2></div>
+            <div class="widget-content">
+                <ul class="sidebar_categories">
+                    {% recursetree category_tree %}
+                    {% if not node.is_leaf_node %}
+                    <li class="level1 sub-level"><a href="#" class="site-nav">{{node.name}}</a>
+                        <ul class="sublinks">
+                            <li class="level2"><a href="{{children.get_url}}" class="site-nav">{{children}}</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="lvl-1"><a href="{{node.get_url}}" class="site-nav">{{node.name}}</a></li>
+                    {% endif %}
+                    {% endrecursetree %}
+                </ul>
+            </div>
+        </div>
+        <div class="sidebar_widget categories filter-widget">
+            <div class="widget-title"><h2>Brands</h2></div>
+            <div class="widget-content">
+                <ul class="sidebar_categories">
+                    {% for brand in brand_links %}
+                    <li class="lvl-1"><a href="{{brand.get_url}}" class="site-nav">{{brand.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!--Categories-->
+        <!--Price Filter-->
+        <div class="sidebar_widget filterBox filter-widget">
+            <div class="widget-title">
+                <h2>Price</h2>
+            </div>
+            <form action="#" method="post" class="price-filter">
+                <div id="slider-range" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                    <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p class="no-margin"><input id="amount" type="text"></p>
+                    </div>
+                    <div class="col-6 text-right margin-25px-top">
+                        <button class="btn btn-secondary btn--small" id="filter">filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--End Price Filter-->
+        <!--Size Swatches-->
+        <div class="sidebar_widget filterBox filter-widget" id="size-filter">
+            <div class="widget-title"><h2>Size</h2></div>
+            <ul>
+                {% for size in size %}
+                <li>
+                  <input type="checkbox" value="{{size.id}}" id="{{size.id}}" name="size-filter">
+                  <label for="check1"><span><span></span></span>{{size.name}}</label>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!--End Size Swatches-->
+        <!--Color Swatches-->
+        <div class="sidebar_widget filterBox filter-widget" id="color-filter">
+            <div class="widget-title"><h2>Color</h2></div>
+            <ul>
+                {% for color in color %}
+                <li>
+                  <input type="checkbox" value="{{color.id}}" id="{{color.id}}" name="color-filter">
+                  <label for="check1"><span><span></span></span>{{color.name}}</label>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!--End Color Swatches-->
+        <!--Popular Products-->
+        <div class="sidebar_widget">
+            <div class="widget-title"><h2>Popular Products</h2></div>
+            <div class="widget-content">
+                <div class="list list-sidebar-products">
+                  <div class="grid">
+                    {% for product in popular_products %}
+                    <div class="grid__item">
+                      <div class="mini-list-item">
+                        <div class="mini-view_image">
+                            <a class="grid-view-item__link" href="{{product.get_url}}">
+                                <img class="grid-view-item__image" src="{{product.image_first}}" alt="{{product.image_first}}" />
+                            </a>
+                        </div>
+                        <div class="details"> <a class="grid-view-item__title" href="{{product.get_url}}">{{product.product.name}}</a>
+                          <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">{% if product.discount_price %}${{product.discount_price}}{% else %}${{product.price}}{% endif %}</span></span></div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+        </div>
+        <!--End Popular Products-->
+    </div>
+</div>
+<!--End Sidebar-->

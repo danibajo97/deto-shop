@@ -1,0 +1,96 @@
+{% load static %}
+{% if products %}
+<table class="table" id="compare-table">
+    <thead>
+    <tr class="th-compare">
+        {% for product in products %}
+        <td valign="middle" class="item-row">
+            <button type="button" class="remove-compare" id="remove-compare" data-product="{{ product.id }}"><i class="anm anm-times-l" aria-hidden="true"></i></button>
+          <div class="grid-link__title">{{product.name}}</div>
+          <div class="item-row"><img src="{{product.get_variation.image_first}}" alt="" class="featured-image"></div>
+        </td>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody id="table-compare">
+    <tr>
+        {% for product in products%}
+        <td valign="middle" class="item-row">
+            {% if product.get_variation.discount_price%}
+            <div class="product-price product_price"><span>${{product.get_variation.discount_price}}</span></div>
+            {% else %}
+            <div class="product-price product_price"><span>${{product.get_variation.price}}</span></div>
+            {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for product in products%}
+        <th>Product Description</th>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for product in products%}
+        <td valign="middle" class="item-row">
+          <p class="description-compare">{{product.description}}</p>
+        </td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for product in products%}
+        <th>Availability</th>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for product in products%}
+        <td valign="middle" class="available-stock">
+        {% if product.get_variation.stock%}
+          <p>In stock</p>
+          {% else %}
+          <p>Not in stock</p>
+          {% endif %}
+        </td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for product in products%}
+        <td valign="middle" align="center">
+            <a href="{{product.get_url}}" title="View Details" class="btn btn-solid">View Details</a>
+        </td>
+        {% endfor %}
+    </tr>
+    </tbody>
+</table>
+{% else %}
+    <div class="container text-center">
+        <h4>You dont have products to compare yeat</h4><br>
+        <h6>Please add one <a href="{% url 'store' %}">Here</a></h6>
+    </div>
+{% endif %}
+<script src="{% static 'js/vendor/jquery-3.3.1.min.js' %}"></script>
+<script>
+     // Add compare
+     $(document).on('click', ".remove-compare", function (event) {
+        event.preventDefault();
+        var _pid = $(this).attr('data-product');
+        // Ajax
+        $.ajax({
+            url: "{% url 'remove_compare' %}",
+            data: {
+                product: _pid
+            },
+            dataType: 'json',
+            success: function (data) {
+                $('#compare-table').html(data.rendered_table);
+                swal({
+                    title: "Success!",
+                    icon: "success",
+                    text: "Your product has been successfully remove from your compare list",
+                    type: "success"
+                });
+            }
+        });
+        // EndAjax
+    });
+    // End
+</script>

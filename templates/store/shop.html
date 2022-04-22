@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'store/banner-shop.html' %}
+<div class="container mt-4">
+    {% if products %}
+    <div class="row">
+        {% include 'store/filters.html' %}
+        <!--Main Content-->
+        <div class="col-12 col-sm-12 col-md-9 col-lg-9 main-col">
+            {% if categories %}
+            <div class="category-description">
+                <h3>{{categories.name}} Description</h3>
+                <p>{{categories.description | safe}}</p>
+            </div>
+            <hr>
+            {% elif brands %}
+            <div class="category-description">
+                <h3>{{brands.name}} Description</h3>
+                <p>Info Brands</p>
+            </div>
+            <hr>
+            {% endif %}
+            <div class="productList product-load-more">
+                <!--Toolbar-->
+                <button type="button" class="btn btn-filter d-block d-md-none d-lg-none"> Product Filters</button>
+                <div class="toolbar">
+                    <div class="filters-toolbar-wrapper">
+                        <div class="row">
+                            <div class="col-4 col-md-4 col-lg-4 filters-toolbar__item collection-view-as d-flex justify-content-start align-items-center">
+                                <a href="#" title="Grid View" class="change-view change-view--active" id="grid-view">
+                                    <img src="{% static 'images/grid.jpg' %}" alt="Grid"/>
+                                </a>
+                                <a href="#" title="List View" class="change-view" id="list-view">
+                                    <img src="{% static 'images/list.jpg' %}" alt="List"/>
+                                </a>
+                            </div>
+                            <div class="col-4 col-md-4 col-lg-4 text-center filters-toolbar__item filters-toolbar__item--count d-flex justify-content-center align-items-center">
+                                <span class="filters-toolbar__product-count">Showing: {{product_count}}</span>
+                            </div>
+                            <div class="col-4 col-md-4 col-lg-4 text-right">
+                                <div class="filters-toolbar__item">
+                                    <label for="SortBy" class="hidden">Sort</label>
+                                    <select name="SortBy" id="SortBy"
+                                            class="filters-toolbar__input filters-toolbar__input--sort">
+                                        <option value="sort" selected="selected">Sort</option>
+                                        <option value="A-Z">Alphabetically, A-Z</option>
+                                        <option value="Z-A">Alphabetically, Z-A</option>
+                                        <option value="D-N">Date, new to old</option>
+                                        <option value="D-O">Date, old to new</option>
+                                    </select>
+                                    <input class="collection-header__default-sort" type="hidden" value="manual">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--End Toolbar-->
+                <div class="grid-products grid--view-items" id="appendListView">
+                    <input type="hidden" name="list-id" id="listid" value="1">
+                    <div class="row">
+                        {% for product in products %}
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-3 item">
+                            <!-- start product image -->
+                            <!-- start product image -->
+                            <div class="product-image">
+                                <!-- start product image -->
+                                <a href="{{ product.get_url }}">
+                                    <!-- image -->
+                                    <img class="primary blur-up lazyload"
+                                         data-src="{{product.get_variation.image_first}}"
+                                         src="{{product.get_variation.image_first}}" alt="image" title="product">
+                                    <!-- End image -->
+                                    <!-- Hover image -->
+                                    <img class="hover blur-up lazyload" data-src="{{product.get_variation.image_last}}"
+                                         src="{{product.get_variation.image_last}}" alt="image"
+                                         title="product">
+                                    <!-- End hover image -->
+                                    <!-- product label -->
+                                    <div class="product-labels rectangular">
+                                        {% if product.get_variation.discount_percentage %}
+                                        <span class="lbl on-sale">-{{product.get_variation.discount_percentage}}%</span>
+                                        {% endif %}
+                                        {% if product.get_variation.label == 'new' %}
+                                        <span class="lbl pr-label1">{{product.get_variation.get_label_display}}</span>
+                                        {% elif product.get_variation.label == 'sale' %}
+                                        <span class="lbl pr-label2">{{product.get_variation.get_label_display}}</span>
+                                        {% elif product.get_variation.label == 'hot' %}
+                                        <span class="lbl pr-label3">{{product.get_variation.get_label_display}}</span>
+                                        {% endif %}
+                                    </div>
+                                    <!-- End product label -->
+                                </a>
+                                <!-- end product image -->
+
+                                <!-- Start product button -->
+                                <div class="variants add">
+                                    <a href="{{ product.get_url }}" class="btn btn-addto-cart" type="button"
+                                       tabindex="0">View Details</a>
+                                </div>
+
+                                <div class="button-set">
+                                    {% comment %} <a href="javascript:void(0)" title="Quick View"
+                                                     class="quick-view-popup quick-view" data-toggle="modal"
+                                                     data-target="#content_{{product.slug}}">
+                                    <i class="icon anm anm-search-plus-r"></i>
+                                </a> {% endcomment %}
+                                    {% if user.is_authenticated %}
+                                    {% if product.is_in_wishlist %}
+                                    <div class="wishlist-btn mt-1">
+                                        <a name="wishlistElements" class="wishlist add-to-wishlist"
+                                           data-product="{{ product.id }}" href="#">
+                                            <i class="icon anm anm-heart"></i>
+                                        </a>
+                                    </div>
+                                    {% else %}
+                                    <div class="wishlist-btn mt-1">
+                                        <a name="wishlistElements" class="wishlist add-to-wishlist"
+                                           data-product="{{ product.id }}" href="#">
+                                            <i class="icon anm anm-heart-l"></i>
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                    {% comment %}
+                                    <div class="compare-btn">
+                                        <a class="compare add-to-compare" data-product="{{ product.id }}" href="#">
+                                            <i class="icon anm anm-random-r"></i>
+                                        </a>
+                                    </div>
+                                    {% endcomment %}
+                                    {% endif %}
+                                </div>
+                                <!-- end product button -->
+                            </div>
+                            <!-- end product image -->
+                            <!--start product details -->
+                            <div class="product-details text-center">
+                                <!-- product name -->
+                                <div class="product-name">
+                                    <a href="{{product.get_url}}">{{product.name}}</a>
+                                </div>
+                                <!-- End product name -->
+                                <!-- product price -->
+                                <div class="product-price">
+                                    {% if product.get_variation.discount_price %}
+                                    <span class="old-price">${{product.get_variation.price}}</span>
+                                    <span class="price">${{product.get_variation.discount_price}}</span>
+                                    {% else %}
+                                    <span class="price">${{product.get_variation.price}}</span>
+                                    {% endif %}
+                                </div>
+                                <!-- End product price -->
+
+                                <div class="product-review">
+                                    <span>
+                                        <i class="fa fa-star{% if product.average_rating < 0.5 %}-o{% elif product.average_rating >= 0.5 and product.average_rating < 1 %}-half-o {% endif %}"
+                                           aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 1.5 %}-o{% elif product.average_rating >= 1.5 and product.average_rating < 2 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 2.5 %}-o{% elif product.average_rating >= 2.5 and product.average_rating < 3 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 3.5 %}-o{% elif product.average_rating >= 3.5 and product.average_rating < 4 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 4.5 %}-o{% elif product.average_rating >= 4.5 and product.average_rating < 5 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                    </span>
+                                </div>
+
+                                <!-- Variant -->
+                                <ul class="swatches" style=" cursor: pointer;">
+                                    {% for image in product.get_product_color %}
+                                    <li class="swatch medium rounded"><a href={{image.get_url}}><img
+                                            src="{{image.image_first}}" alt="image"/></a></li>
+                                    {% endfor %}
+                                </ul>
+                                <!-- End Variant -->
+                            </div>
+                            <!-- End product details -->
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr class="clear">
+                    <div class="pagination">
+                        <ul>
+                            {% if products.has_previous %}
+                            <li class="next mr-2 active"><a href="#" id="previous_button"><i class="fa fa-caret-left"
+                                                                                             aria-hidden="true"></i></a>
+                            </li>
+                            {% else %}
+                            <li class="next mr-2"><a href="#" id="previous_button" disabled><i class="fa fa-caret-left"
+                                                                                               aria-hidden="true"></i></a>
+                            </li>
+                            {% endif %}
+                            <li class="active"><a href="#" id="number">{{ products.number }} </a> of 
+                                {{ products.paginator.num_pages }}
+                            </li>
+                            {% if products.has_next %}
+                            <li class="next ml-2 active"><a href="#" id="next_button"><i class="fa fa-caret-right"
+                                                                                         aria-hidden="true"></i></a>
+                            </li>
+                            {% else %}
+                            <li class="next ml-2"><a href="#" id="next_button" disabled><i class="fa fa-caret-right"
+                                                                                           aria-hidden="true"></i></a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--End Main Content-->
+    </div>
+    {% else %}
+    <h2 class="text-center">No Products to Show</h2>
+    {% endif %}
+</div>
+
+{% endblock %}

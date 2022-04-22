@@ -1,0 +1,51 @@
+<form method="post" id="only-post-color"
+      accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+    <div class="swatch clearfix swatch-0-{{product.slug}} option1-{{product.slug}}" data-option-index="0" id="appendColor">
+        <div class="product-form__item">
+            <label class="header">Color: <span class="slVariant" id="color-selected">{{variant.color.name}}</span></label>
+            {% for variation in product.get_product_color %}
+            <div data-value="{{variation.color.id}}" class="swatch-element color {{variation.color.name}}-{{product.slug}}" 
+            available name="color" id="color">
+                <input class="swatchInput" id="swatch-0-{{variation.color.name}}-{{product.slug}}" type="radio" name="color"
+                       value="{{variation.color.name}}" {% if variant.id == variation.id %} checked {% endif %}>
+                <label class="swatchLbl color medium rectangle" for="swatch-0-{{variation.color.name}}-{{product.slug}}"
+                       style="{% if variation.image_first %}background-image:url({{variation.image_first}});{% else %}background-color:{{variation.color.code}};{% endif %}"
+                       title="{{variation.color.name}}-{{product.slug}}"></label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</form>
+<script>
+    window.onload = function (){
+        color_name = document.querySelector('[name="color"]:checked').value,
+            document.getElementById("color-selected").innerHTML = color_name;
+            document.getElementById("final-color-selected").innerHTML = color_name;
+            $.ajax({
+                type: 'POST',
+                url: '{% url "ajaxprice" %}',
+                data: {
+                    productid: $('#productid').val(),
+                    color : document.querySelector('[name="color"]:checked').value,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    action: 'post'
+                },
+                data_type: 'html',
+                success: function (data) {
+                    $('#add-cart-variation').html(data.rendered_table);
+                    $('#appendGallery').html(data.rendered_gallery);
+                },
+                error: function (data) {
+                    swal({
+                        title: "Upss!",
+                        icon: "error",
+                        text: "There is a problem!..."+ data,
+                        type: "error"
+                    });
+                }
+            });
+    };
+</script>

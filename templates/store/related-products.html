@@ -1,0 +1,52 @@
+<div class="prSidebar sidebar-product">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        
+        <!--Related Product-->
+        <div class="related-product grid-products">
+            {% if related_products %}
+            <header class="section-header">
+                <h2 class="section-header__title text-center h2"><span>Related Products</span></h2>
+                <p class="sub-heading">You can stop autoplay, increase/decrease aniamtion speed and number of grid to show and products from store admin.</p>
+            </header>
+            <div class="grid">
+                {% for product in related_products %}
+                <div class="grid__item">
+                  <div class="mini-list-item">
+                    <div class="mini-view_image">
+                        <a class="grid-view-item__link" href="{{ product.get_url }}">
+                            <img class="grid-view-item__image" src="{{product.get_variation.image_first}}" alt="">
+                        </a>
+                    </div>
+                    <div class="details">
+                        <a class="grid-view-item__title" href="{{ product.get_url }}">{{product.name}}</a>
+                          <div class="grid-view-item__meta"><span class="product-price__price"><span class="money">{% if product.get_variation.discount_price %}${{product.get_variation.discount_price}}{% else %}{{product.get_variation.price}}{% endif %}</span></span></div>
+                        <div class="rating-star">
+                            <span>
+                                <i class="fa fa-star{% if product.average_rating < 0.5 %}-o{% elif product.average_rating >= 0.5 and product.average_rating < 1 %}-half-o {% endif %}"
+                                    aria-hidden="true"></i>
+                                 <i class="fa fa-star{% if product.average_rating < 1.5 %}-o{% elif product.average_rating >= 1.5 and product.average_rating < 2 %}-half-o {% endif %}"
+                                    aria-hidden="true"></i>
+                                 <i class="fa fa-star{% if product.average_rating < 2.5 %}-o{% elif product.average_rating >= 2.5 and product.average_rating < 3 %}-half-o {% endif %}"
+                                    aria-hidden="true"></i>
+                                 <i class="fa fa-star{% if product.average_rating < 3.5 %}-o{% elif product.average_rating >= 3.5 and product.average_rating < 4 %}-half-o {% endif %}"
+                                    aria-hidden="true"></i>
+                                 <i class="fa fa-star{% if product.average_rating < 4.5 %}-o{% elif product.average_rating >= 4.5 and product.average_rating < 5 %}-half-o {% endif %}"
+                                    aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+             </div>
+             <!--End Related Product-->
+             {% else %}
+             <header class="section-header">
+                <h2 class="section-header__title text-center h2"><span>There is not related products to show</span></h2>
+                <p class="sub-heading">You can stop autoplay, increase/decrease aniamtion speed and number of grid to show and products from store admin.</p>
+            </header>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!--Product Sidebar-->

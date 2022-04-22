@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="container my-4">
+    <!-- Featured Products -->
+    <h2 class="my-4 border-bottom pb-1">Wishlist Items</h2>
+    <div class="row">
+		{% include 'includes/dashboard_sidebar.html' %}
+        <div class="col-md-9">
+            {% if products %}
+            <div class="table-responsive">
+                <table class="table-bordered table">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>
+                            <img width="50" src="{{product.get_variation.image_first}}"
+                                 alt="{{product.name}}">
+                        </td>
+                        <td><a href="{{product.get_url}}">{{product.name}}</a></td>
+                        {% if product.get_variation.discount_price %}
+                        <td>${{product.get_variation.discount_price}}</td>
+                        {% else %}
+                        <td>${{product.get_variation.price}}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="container text-center">
+                <h4>You dont have products in your wishlist yeat</h4><br>
+                <h6>Please go to the <a href="{% url 'store' %}">Shop</a></h6>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

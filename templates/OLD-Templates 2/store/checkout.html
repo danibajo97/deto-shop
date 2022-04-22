@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'includes/breadcrumb.html' %}
+<section class="section-content padding-y">
+    <div class="container">
+        <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a id="show"
+                                                                       href="javascript:document.getElementById('coupon').style.display='block';void 0">Have
+            a
+            coupon?</a> Click
+            here to enter your code.</h6>
+        <!-- ============================ COMPONENT 1 ================================= -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <img src="{{ user.profile_picture.url }}" alt="User Profile Picture"
+                                 width="50" height="50" style="border-radius:50px;" class="mr-2">
+                <b>User:</b> {{user.full_name}} /
+                <b>Email:</b> {{user.email}}
+            </div>
+        </div>
+        <form method="POST" action="{% url 'add-coupon' %}" class="card p-2 mb-4" id="coupon" style="display:none">
+            {% csrf_token %}
+            <div class="input-group">
+                {{ couponForm.code }}
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-secondary">Redeem</button>
+                </div>
+            </div>
+        </form>
+        <form action="{% url 'place_order' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">User Address</h4>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Phone Number</label>
+                                    {{orderAddressForm.phone_number}}
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Street Address</label>
+                                    {{orderAddressForm.street_address}}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Aparment Address</label>
+                                    {{orderAddressForm.apartment_address}}
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">City</label>
+                                    {{orderAddressForm.city}}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Pin Code</label>
+                                    {{orderAddressForm.zip}}
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">State</label>
+                                    {{orderAddressForm.state}}
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">Country</label>
+                                    {{orderAddressForm.country}}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="">Extra information</label>
+                                    {{orderAddressForm.note_address}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-outline-success order-submit btn-block">Place order
+                    </button>
+                    <a href="{% url 'store' %}" class="btn btn-outline-primary btn-block">Continue shopping</a>
+                </div>
+                <div class="col-lg-5">
+                    <div class="checkout__order">
+                        <h5>Your order</h5>
+                        {% include 'includes/checkout_order.html' %}
+                        <div class="checkout__order__widget">
+                            {% if user.id is None %}
+                            Create an acount?<a href="{% url 'register' %}"> Register</a>
+                            <p>Create am acount by entering the information below. If you are a returing customer
+                                login at the top of the page.</p>
+                            {% endif %}
+                            <div class="input-checkbox">
+                                <input checked type="checkbox" id="terms" name="terms">
+                                I've read and accept the <a href="#">terms & conditions</a>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div> <!-- row.// -->
+    <!-- ============================ COMPONENT 1 END .// ================================= -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

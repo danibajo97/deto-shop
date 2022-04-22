@@ -1,0 +1,112 @@
+{% load static %}
+{% for product in products%}
+<!--Quick View popup-->
+<div class="modal fade content_quickview" id="content_{{product.slug}}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="ProductSection-product-template" class="product-template__container {{product.slug}}">
+                    <div class="product-single">
+                        <!-- Start model close -->
+                        <a href="javascript:void()" data-dismiss="modal" class="model-close-btn pull-right"
+                           title="close"><span class="icon icon anm anm-times-l"></span></a>
+                        <!-- End model close -->
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="product-details-img" id="appendQuickColor-{{product.id}}">
+                                    <div class="pl-20">
+                                        <img src="{{product.get_variation.image_first}}" alt=""/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="product-single__meta">
+                                    <h2 class="product-single__title">{{product.name}}</h2>
+                                    <h3 class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
+                                            <p id="ProductPrice-product-template">Prices Between 
+                                                <span class="money" style="color: red">${{product.get_min_price}} and ${{product.get_max_price}}</p>
+                                    </h3>
+                                    <div class="prInfoRow">
+                                        <div class="product-review"><a class="reviewLink" href="#tab2">
+                                            <span>
+                                                <i class="fa fa-star{% if product.average_rating < 0.5 %}-o{% elif product.average_rating >= 0.5 and product.average_rating < 1 %}-half-o {% endif %}"
+                                                    aria-hidden="true"></i>
+                                                 <i class="fa fa-star{% if product.average_rating < 1.5 %}-o{% elif product.average_rating >= 1.5 and product.average_rating < 2 %}-half-o {% endif %}"
+                                                    aria-hidden="true"></i>
+                                                 <i class="fa fa-star{% if product.average_rating < 2.5 %}-o{% elif product.average_rating >= 2.5 and product.average_rating < 3 %}-half-o {% endif %}"
+                                                    aria-hidden="true"></i>
+                                                 <i class="fa fa-star{% if product.average_rating < 3.5 %}-o{% elif product.average_rating >= 3.5 and product.average_rating < 4 %}-half-o {% endif %}"
+                                                    aria-hidden="true"></i>
+                                                 <i class="fa fa-star{% if product.average_rating < 4.5 %}-o{% elif product.average_rating >= 4.5 and product.average_rating < 5 %}-half-o {% endif %}"
+                                                    aria-hidden="true"></i>
+                                            </span>
+                                            <span class="spr-badge-caption">{{ reviews_count }} reviews</span></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-single__description rte">
+                                        {{ product.description | safe }}
+                                    </div>
+                                    {% if product.variant == 'Size-Color' %}
+                                    {% include 'includes/quick-variations.html' %}
+                                    {% endif %}
+                                    <br>
+                                    <div class="product-action clearfix">                             
+                                        <div class="product-form__item--submit">
+                                            <a type="button" class="btn" href={{product.get_url}}>
+                                                <span>View Details</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="display-table shareRow">
+                                        <div class="display-table-cell">
+                                            <div class="wishlist-btn">
+                                                <a class="wishlist add-to-wishlist" href="#" title="Add to Wishlist"><i
+                                                        class="icon anm anm-heart-l" aria-hidden="true"></i> <span>Add to Wishlist</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--End-product-single-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Quick View popup-->
+<script src="{% static 'js/vendor/jquery-3.3.1.min.js' %}"></script>
+<script>
+    $(document).on('change', '#quick-post-color-{{product.id}}', function (e) {
+        color_name = document.querySelector('[name="color"]:checked').value,
+        document.getElementById("color-selected").innerHTML = color_name;
+        e.preventDefault,
+        console.log({{product.id}})
+        $.ajax({
+            type: 'POST',
+            url: '{% url "ajaxprice" %}',
+            data: {
+                productid: {{product.id}},
+                color: document.querySelector('[name="color"]:checked').value,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            data_type: 'html',
+            success: function (data) {
+                $('#appendQuickColor-{{product.id}}').html(data.rendered_quick_gallery);
+            },
+            error: function (data) {
+                swal({
+                    title: "Upss!",
+                    icon: "error",
+                    text: "There is a problem!..."+ data,
+                    type: "error"
+                });
+            }
+        })
+    });
+</script>
+{% endfor %}
+
+

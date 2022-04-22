@@ -1,0 +1,203 @@
+{% load static %}
+<form method="post" data-post-url="{% url 'add_cart' product.id %}" id="add-cart-variation-ajax"
+      accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="variantid" id="variantid" value="{{ product.id }}">
+    <div class="prInfoRow ml-2">
+        {% if product.stock < 5 %}
+            <div id="quantity_message" class="mt-2">Hurry! Only <span
+                class="items">{{product.stock}}</span> left in stock.
+            </div>
+        {% endif %}
+        <br>
+        <div class="product-stock">
+            {% if product.stock %}
+            <span class="instock">In Stock</span>
+            {% else %}
+            <span class="outstock">Unavailable</span>
+            {% endif %}
+        </div>
+        <p class="product-single__price product-single__price-product-template">
+            {% if product.discount_price %}
+            <s id="ComparePrice-product-template"><span class="money">${{product.price}}</span></s>
+            <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
+                    <span id="ProductPrice-product-template"><span class="money">${{product.discount_price}}</span></span>
+                </span>
+                <span class="discount-badge"> <span class="devider">|</span>&nbsp;
+                    <span>You Save</span>
+                    <span id="SaveAmount-product-template" class="product-single__save-amount">
+                    <span class="off">(<span>{{product.discount_percentage}}</span>%)</span>
+                </span>  
+            {% else %}
+            <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
+                <span id="ProductPrice-product-template"><span
+                        class="money">${{product.price}}</span></span>
+            </span>
+            {% endif %}
+            <p>{{product.description | safe}} </p>
+        </p><br>
+        {% if product.product.variant == 'Size-Color' %}
+        <strong>Selected</strong>
+        <span style="color: red;"><b>Size: </b></span><span id="final-size-selected">{{product.size.name}} | </span>
+        <span style="color: red;"><b>Color: </b></span><span id="final-color-selected">{{product.color.name}}</span>
+        {% elif product.product.variant == 'Size' %}
+        <strong>Selected</strong>
+        <span style="color: red;"><b>Size: </b></span><span id="final-size-selected">{{product.size.name}}</span>
+        {% elif product.product.variant == 'Color' %}
+        <strong>Selected</strong>
+        <span style="color: red;"><b>Color: </b></span><span id="final-color-selected">{{product.color.name}}</span>
+        {% endif %}
+    </div>
+    
+    <!-- Product Action -->
+    <div class="product-action clearfix">
+        <div class="wrapQtyBtn mr-2">
+            <div class="qtyField">
+                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty" disabled>
+                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="product-form__item--submit">
+            <button type="submit" id="add"
+                    class="btn product-form__cart-submit">
+                <span>Add to cart</span>
+            </button>
+        </div>
+    </div>
+    <!-- End Product Action -->
+</form>
+
+<script>
+
+    function qnt_incre() {
+        $(".qtyBtn").on("click", function() {
+            var qtyField = $(this).parent(".qtyField"),
+                oldValue = $(qtyField).find(".qty").val(),
+                newVal = 1;
+
+            if ($(this).is(".plus")) {
+                newVal = parseInt(oldValue) + 1;
+            } else if (oldValue > 1) {
+                newVal = parseInt(oldValue) - 1;
+            }
+            if (newVal <= {{product.stock}}){
+                $(qtyField).find(".qty").val(newVal); 
+            }
+        });
+    }
+    qnt_incre();
+
+    $(function(){
+        $('#add-cart-variation-ajax').on('submit', function(e) {
+            var post_url = $("#add-cart-variation").data("post-url");
+            e.preventDefault();
+            if (($("input:radio[name='size']:checked").length != 0) && ($("input:radio[name='color']:checked").length != 0 )) {
+                $.ajax({
+                    type: "POST", 
+                    url: post_url,
+                    headers: { "X-CSRFToken": '{{csrf_token}}'},
+                    data: {
+                        productid: $('#productid').val(),
+                        size : document.querySelector('[name="size"]:checked').value,
+                        color : document.querySelector('[name="color"]:checked').value,
+                        quantity: document.getElementById('Quantity').value
+                    },
+                    success: function (response) {
+                        cart_count = response.total_items;
+                        $('#header-cart').html(response.data.rendered_table);
+                        document.getElementById("CartCount").innerHTML = cart_count;
+                        nameProduct = document.getElementById("product_name").innerHTML;
+                        swal({
+                            title: "Success!",
+                            icon: "success",
+                            text: "Your " + nameProduct + " has been successfully added",
+                            type: "success"
+                        });
+                    },
+                    error: function (response) {
+                        swal({
+                            title: "Upss!",
+                            icon: "error",
+                            text: "There is a problem!..."+ response,
+                            type: "error"
+                        });
+                    } 
+                });
+            } else if (($("input:radio[name='size']:checked").length === 0) && ($("input:radio[name='color']:checked").length != 0 )) {
+                $.ajax({
+                    type: "POST", 
+                    url: post_url,
+                    headers: { "X-CSRFToken": '{{csrf_token}}'},
+                    data: {
+                        productid: $('#productid').val(),
+                        color : document.querySelector('[name="color"]:checked').value,
+                        quantity: document.getElementById('Quantity').value
+                    },
+                    success: function (response) {
+                        cart_count = response.total_items;
+                        $('#header-cart').html(response.data.rendered_table);
+                        document.getElementById("CartCount").innerHTML = cart_count;
+                        nameProduct = document.getElementById("product_name").innerHTML;
+                        swal({
+                            title: "Success!",
+                            icon: "success",
+                            text: "Your " + nameProduct + " has been successfully added",
+                            type: "success"
+                        });
+                    },
+                    error: function (response) {
+                        swal({
+                            title: "Upss!",
+                            icon: "error",
+                            text: "There is a problem!..."+ response,
+                            type: "error"
+                        });
+                    } 
+                });
+            } else if (($("input:radio[name='size']:checked").length != 0) && ($("input:radio[name='color']:checked").length === 0 )) {
+                $.ajax({
+                    type: "POST", 
+                    url: post_url,
+                    headers: { "X-CSRFToken": '{{csrf_token}}'},
+                    data: {
+                        productid: $('#productid').val(),
+                        size : document.querySelector('[name="size"]:checked').value,
+                        quantity: document.getElementById('Quantity').value
+                    },
+                    success: function (response) {
+                        cart_count = response.total_items;
+                        $('#header-cart').html(response.data.rendered_table);
+                        document.getElementById("CartCount").innerHTML = cart_count;
+                        nameProduct = document.getElementById("product_name").innerHTML;
+                        swal({
+                            title: "Success!",
+                            icon: "success",
+                            text: "Your " + nameProduct + " has been successfully added",
+                            type: "success"
+                        });
+                    },
+                    error: function (response) {
+                        swal({
+                            title: "Upss!",
+                            icon: "error",
+                            text: "There is a problem!..."+ response,
+                            type: "error"
+                        });
+                    } 
+                });
+            }
+        });
+    });
+
+</script>
+
+
+
+
+
+
+
+
+

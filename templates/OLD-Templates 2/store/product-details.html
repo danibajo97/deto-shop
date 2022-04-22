@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__left product__thumb nice-scroll">
+                        <a class="pt" href="#{{ single_product.alt_text }}">
+                            <img src="{{ single_product.product_image.url }}" alt="{{ single_product.alt_text }}">
+                        </a>
+                        {% for image in images %}
+                        <a class="pt" href="#{{ image.variationKey }}">
+                            <img src="{{ image.image.url }}" alt="{{ image.variationKey }}">
+                        </a>
+                        {% endfor %}
+                    </div>
+                    <div class="product__details__slider__content">
+                        <div class="product__details__pic__slider owl-carousel">
+                            <img data-hash="{{ single_product.alt_text }}" class="product__big__img"
+                                 src="{{ single_product.product_image.url }}" alt="{{ single_product.alt_text }}">
+                            {% for image in images %}
+                            <img data-hash="{{ image.variationKey }}" class="product__big__img"
+                                 src="{{ image.image.url }}"
+                                 alt="{{ image.variationKey }}">
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product__details__text">
+                    <h3>{{ single_product.name }}</h3>
+                        <span>Brand: {{ single_product.brand }}</span><br>
+                        <span>Category: {{ single_product.category }}</span>
+                        {% if single_product.stock %}
+                        <span>Stock: {{ single_product.stock }}</span>
+                        {% else %}
+                        <h5 style="color: white "><span class="badge bg-info">Out of Stock</span></h5>
+                        {% endif %}
+                    <div class="rating">
+                        {% if single_product.average_rating == 1 %}
+                        <i class="fa fa-star"></i>
+                        {% elif single_product.average_rating == 2 %}
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        {% elif single_product.average_rating == 3 %}
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        {% elif single_product.average_rating == 4 %}
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        {% elif single_product.average_rating == 5 %}
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        {% elif single_product.average_rating == 0 %}
+                        <i class="fa fa-star-o empty"></i>
+                        {% endif %}
+                        <a class="review-link"><span>{{ reviews_count }} Review(s)</span></a>
+                    </div>
+                    <div class="product__details__price">{% if single_product.discount_price %} $
+                        {{ single_product.discount_price }}<span>${{ single_product.price }}</span>
+                        {% else %} ${{ single_product.price }}{% endif %}
+                    </div>
+                    <p> {{single_product.description}}</p>
+                    <form action="{% url 'add_cart' single_product.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row container">
+                            {% if colors %}
+                            <div class="item-option-select">
+                                <h6 class="mb-2">Choose Color</h6>
+                                <select name="color" class="form-control" required>
+                                    {% for i in colors %}
+                                    <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% endif %}
+                            {% if sizes %}
+                            <div class="item-option-select">
+                                <h6 class="mb-2">Select Size</h6>
+                                <select name="size" class="form-control">
+                                    {% for i in sizes %}
+                                    <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% endif %}
+                        </div> <!-- row.// -->
+                        <hr>
+                        {% if single_product.stock <= 0 %}
+                        <h5 class="text-danger">Out of Stock </h5>
+                        {% else %}
+                        <div class="quantity">
+                            <h6 class="mb-2">Quantity</h6>
+                            <input type="number" name="quantity" max="{{ single_product.stock }}" min="1" value="1"
+                                   class="form-control">
+                            <br>
+                            <button class="btn btn-outline-primary btn-block mb-2" type="submit"><i
+                                    class="fa fa-shopping-cart"></i>
+                                Add to cart
+                            </button>
+                            <div class="name" style="font-size: 0">{{ single_product.name }}</div>
+                            <div class="url"
+                                 style="font-size: 0">{% url 'add_cart' single_product.id %}
+                            </div>
+                            {% endif %}
+                            {% if user.is_authenticated %}
+                            <button class="btn btn-outline-danger add-wishlist btn-block"
+                                    type="button"><i class="icon-wishlist icon_heart_alt"></i> Add to Wishlist
+                            </button>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#reviews" role="tab">
+                                Reviews ( {{ reviews_count }} )</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in" id="reviews" role="tabpanel">
+                            {% include 'includes/reviews.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% include 'includes/related_products.html' %}
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->
+{% endblock %}

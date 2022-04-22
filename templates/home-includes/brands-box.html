@@ -1,0 +1,23 @@
+{% load mptt_tags %}
+<!--Collection Box slider-->
+<div class="collection-box section">
+    <div class="container-fluid">
+        <div class="section-header text-center">
+            <h2 class="h2">Our Brands</h2>
+            <p>Browse the huge variety of our products</p>
+        </div>
+        <div class="collection-grid">
+            {% for brand in brands %}
+            <div class="collection-grid-item">
+                <a href="{{ brand.get_url }}" class="collection-grid-item__link">
+                    <img data-src="{{ brand.image.url }}" src="{{ brand.image.url }}" alt="{{ brand.title }}" class="blur-up lazyload"/>
+                    <div class="collection-grid-item__title-wrapper">
+                        <h3 class="collection-grid-item__title btn btn--secondary no-border">{{ brand.title }}</h3>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!--End Collection Box slider-->

@@ -1,0 +1,89 @@
+<div class="col-lg-3 col-md-3">
+    <div class="shop__sidebar">
+        <div class="sidebar__categories">
+            <div class="section-title">
+                <h4>Filters</h4>
+            </div>
+            <div class="categories__accordion">
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-heading active">
+                            <a data-toggle="collapse" data-target="#collapseOne">Shop by Categories</a>
+                        </div>
+                        <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <ul>
+                                    <li><a href="{% url 'store' %}">All</a></li>
+                                    {% for category in links %}
+                                    <li><a href="{{ category.get_url }}">{{ category.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-heading">
+                            <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                               class="collapsed">Shop by Brands</a>
+                        </div>
+                        <div id="collapseTwo" class="collapse" data-parent="#accordionExample" style="">
+                            <div class="card-body">
+                                <ul>
+                                    <li><a href="{% url 'store' %}">All</a></li>
+                                    {% for brand in brand_links %}
+                                    <li><a href="{{ brand.get_url }}">{{ brand.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar__filter">
+            <div class="section-title">
+                <h4>Shop by price</h4>
+            </div>
+            <div class="filter-range-wrap">
+                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                     data-min="{{ min_price.price__min }}" data-max="{{max_price.price__max}}"></div>
+                <div class="range-slider">
+                    <div class="price-input">
+                        <p>Price:</p>
+                        <input type="text" id="minamount">
+                        <input type="text" id="maxamount">
+                    </div>
+                </div>
+            </div>
+            <a href="#">Filter</a>
+        </div>
+        <div class="sidebar__sizes">
+            <div class="section-title">
+                <h4>Shop by size</h4>
+            </div>
+            <div class="size__list">
+                {% for size in size %}
+                <label for="{{ size.title }}">
+                    {{ size.title }}
+                    <input type="checkbox" id="{{ size.title }}">
+                    <span class="checkmark"></span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="sidebar__color">
+            <div class="section-title">
+                <h4>Shop by Colors</h4>
+            </div>
+            <div class="size__list color__list">
+                {% for color in color %}
+                <label for="{{ color.title }}">
+                    {{ color.title }}
+                    <input type="checkbox" id="{{ color.title }}">
+                    <span class="checkmark"></span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

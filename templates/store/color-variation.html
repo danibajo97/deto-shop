@@ -1,0 +1,21 @@
+<form method="post" id="post-color"
+      accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+    <div class="swatch clearfix swatch-0-{{product.slug}} option1-{{product.slug}}" data-option-index="0" id="appendColor">
+        <div class="product-form__item">
+            <label class="header">Color: <span class="slVariant" id="color-selected">{{variant.color.name}}</span></label>
+            {% for variation in product.get_product_color %}
+            <div data-value="{{variation.color.id}}" class="swatch-element color {{variation.color.name}}-{{product.slug}}" 
+            available name="color" id="color">
+                <input class="swatchInput" id="swatch-0-{{variation.color.name}}-{{product.slug}}" type="radio" name="color"
+                       value="{{variation.color.name}}" {% if variant.id == variation.id %} checked {% endif %}>
+                <label class="swatchLbl color medium rectangle" for="swatch-0-{{variation.color.name}}-{{product.slug}}"
+                       style="{% if variation.image_first %}background-image:url({{variation.image_first}});{% else %}background-color:{{variation.color.code}};{% endif %}"
+                       title="{{variation.color.name}}-{{product.slug}}"></label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</form>

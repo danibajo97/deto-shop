@@ -1,0 +1,116 @@
+<div id="shopify-product-reviews">
+    <div class="spr-container">
+        <div class="spr-header clearfix">
+            <b class="mb-2">Customer Reviews</b> 
+            <div class="spr-summary rating-star">
+                <span>
+                    <i class="fa fa-star{% if product.average_rating < 0.5 %}-o{% elif product.average_rating >= 0.5 and product.average_rating < 1 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                     <i class="fa fa-star{% if product.average_rating < 1.5 %}-o{% elif product.average_rating >= 1.5 and product.average_rating < 2 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                     <i class="fa fa-star{% if product.average_rating < 2.5 %}-o{% elif product.average_rating >= 2.5 and product.average_rating < 3 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                     <i class="fa fa-star{% if product.average_rating < 3.5 %}-o{% elif product.average_rating >= 3.5 and product.average_rating < 4 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                     <i class="fa fa-star{% if product.average_rating < 4.5 %}-o{% elif product.average_rating >= 4.5 and product.average_rating < 5 %}-half-o {% endif %}"
+                        aria-hidden="true"></i>
+                <span
+                        class="spr-summary-actions-togglereviews">{{ reviews_count }} reviews</span></span>
+            </div>
+        </div>
+        <div class="spr-content">
+            <div class="spr-form clearfix">
+                <form method="post" action="{% url 'submit_review' product.id %}" id="new-review-form" class="new-review-form">
+                    {% csrf_token %}
+                    <h3 class="spr-form-title">Write a review</h3>
+                    <fieldset class="spr-form-review">
+                        <div class="spr-form-review-rating">
+                            <label class="spr-form-label">Rating</label>
+                            <div class="spr-form-input spr-starrating">
+                                <div class="rate">
+                                    <input type="radio" name="rating" id="rating10" value="5" required/> <label
+                                        for="rating10" title="5"></label>
+                                    <input type="radio" name="rating" id="rating9" value="4.5" required/> <label
+                                        for="rating9" title="4.5" class="half"></label>
+                                    <input type="radio" name="rating" id="rating8" value="4" required/> <label for="rating8"
+                                                                                                               title="4"></label>
+                                    <input type="radio" name="rating" id="rating7" value="3.5" required/> <label
+                                        for="rating7" title="3.5" class="half"></label>
+                                    <input type="radio" name="rating" id="rating6" value="3" required/> <label for="rating6"
+                                                                                                               title="3"></label>
+                                    <input type="radio" name="rating" id="rating5" value="2.5" required/> <label
+                                        for="rating5" title="2.5" class="half"></label>
+                                    <input type="radio" name="rating" id="rating4" value="2" required/> <label for="rating4"
+                                                                                                               title="2"></label>
+                                    <input type="radio" name="rating" id="rating3" value="1.5" required/> <label
+                                        for="rating3" title="1.5" class="half"></label>
+                                    <input type="radio" name="rating" id="rating2" value="1" required/> <label for="rating2"
+                                                                                                               title="1"></label>
+                                    <input type="radio" name="rating" id="rating1" value="0.5" required/> <label
+                                        for="rating1" title="0.5" class="half"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="spr-form-review-title">
+                            <label class="spr-form-label" for="review_title">Review
+                                Title</label>
+                            <input class="spr-form-input spr-form-input-text "
+                                   id="review_title" type="text" name="subject"
+                                   value="" placeholder="Give your review a title">
+                        </div>
+                        <div class="spr-form-review-body">
+                            <label class="spr-form-label" for="review_body">Body of
+                                Review <span
+                                        class="spr-form-review-body-charactersremaining">(1500)</span></label>
+                            <div class="spr-form-input">
+                                <textarea class="spr-form-input spr-form-input-textarea "
+                                          id="review_body"
+                                          name="review" rows="10"
+                                          placeholder="Write your comments here"></textarea>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="spr-form-actions">
+                        {% if user.is_authenticated %}
+                        {% if orderproduct %}
+                        <input type="submit"
+                               class="spr-button spr-button-primary button button-primary btn btn-primary"
+                               value="Submit Review">
+                        {% else %}
+                        <p>You must be purchase this product post a review.</p>
+                        {% endif %}
+                        {% else %}
+                        <p>You must be logged in to post a review.<span><a
+                                href="{% url 'login' %}"> Login now</a></span></p>
+                        {% endif %}
+                    </fieldset>
+                </form>
+            </div>
+            <div class="spr-reviews">
+                {% for review in reviews %}
+                <div class="spr-review">
+                    <div class="spr-review-header rating-star">
+                        <span>
+                            <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}"
+                               aria-hidden="true"></i>
+                            <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %}"
+                               aria-hidden="true"></i>
+                            <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %}"
+                               aria-hidden="true"></i>
+                            <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %}"
+                               aria-hidden="true"></i>
+                            <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}"
+                               aria-hidden="true"></i>
+                        </span>
+                        <h3 class="spr-review-header-title">{{ review.subject }}</h3>
+                        <span class="spr-review-header-byline"><strong>{{ review.user.full_name }}</strong> on <strong>{{ review.updated_at }}</strong></span>
+                    </div>
+                    <div class="spr-review-content">
+                        <p class="spr-review-content-body">{{ review.review }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

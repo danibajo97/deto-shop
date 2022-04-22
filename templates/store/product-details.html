@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!--MainContent-->
+<div id="MainContent" class="main-content" role="main">
+    {% include 'includes/breadcrumb.html' %}
+    <div id="ProductSection-product-template" class="product-template__container prstyle3 container-fluid">
+        <!--product-single-->
+        <div class="product-single">
+            <div class="left-content-product">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="product-details-img" id="appendGallery">
+                            <div class="product-thumb">
+                                <div id="gallery" class="product-dec-slider-2 product-tab-left">
+                                    {% if variant %}
+                                    {% for image in variant.image.all %}
+                                    <a data-image="{{image.image.url}}"
+                                       data-zoom-image="{{image.image.url}}"
+                                       class="slick-slide slick-cloned" data-slick-index="-{{image.id}}" aria-hidden="true"
+                                       tabindex="-1">
+                                        <img class="blur-up lazyload"
+                                             data-src="{{image.image.url}}"
+                                             src="{{image.image.url}}" alt=""/>
+                                    </a>
+                                    {% endfor %}
+                                    {% else %}
+                                    {% for item in product.get_variation.image.all %}
+                                    <a data-image="{{item.image.url}}"
+                                       data-zoom-image="{{item.image.url}}"
+                                       class="slick-slide slick-cloned" data-slick-index="-{{item.id}}" aria-hidden="true"
+                                       tabindex="-1">
+                                        <img class="blur-up lazyload"
+                                             data-src="{{item.image.url}}"
+                                             src="{{item.image.url}}" alt=""/>
+                                    </a>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="zoompro-wrap product-zoom-right pl-20">
+                                <div class="zoompro-span">
+                                    {% if variant %}
+                                    <img class="blur-up lazyload zoompro"
+                                         data-zoom-image="{{variant.image_first}}"
+                                         alt="" src="{{variant.image_first}}"/>
+                                    {% else %}
+                                    <img class="blur-up lazyload zoompro"
+                                         data-zoom-image="{{product.get_variation.image_first}}"
+                                         alt="" src="{{product.get_variation.image_first}}"/>
+                                    {% endif %}
+                                </div>
+                                <div class="product-labels">
+                                    {% if product.get_variation.discount_percentage %}
+                                    <span class="lbl on-sale">-{{product.get_variation.discount_percentage}}%</span>
+                                    {% endif %}
+                                    {% if product.get_variation.label == 'new' %}
+                                    <span class="lbl pr-label1">{{product.get_variation.get_label_display}}</span>
+                                    {% elif product.get_variation.label == 'sale' %}
+                                    <span class="lbl pr-label2">{{product.get_variation.get_label_display}}</span>
+                                    {% elif product.get_variation.label == 'hot' %}
+                                    <span class="lbl pr-label3">{{product.get_variation.get_label_display}}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="product-buttons">
+                                    <a href="#" class="btn prlightbox" title="Zoom"><i
+                                            class="icon anm anm-expand-l-arrows"
+                                            aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                            <div class="lightboximages">
+                                {% if variant %}
+                                {% for image in variant.image.all %}
+                                <a href="{{image.image.url}}"
+                                   data-size="1462x2048"></a>
+                                {% endfor %}
+                                {% else %}
+                                {% for image in product.get_variation.image.all %}
+                                <a href="{{image.image.url}}"
+                                   data-size="1462x2048"></a>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="product-single__meta">
+                            <h1 class="product-single__title" id="product_name">{{product.name}}</h1>
+                            <div class="prInfoRow">
+                                <div class="product-review rating-star"><a class="reviewLink" href="#tab2">
+                                    <span>
+                                        <i class="fa fa-star{% if product.average_rating < 0.5 %}-o{% elif product.average_rating >= 0.5 and product.average_rating < 1 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 1.5 %}-o{% elif product.average_rating >= 1.5 and product.average_rating < 2 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 2.5 %}-o{% elif product.average_rating >= 2.5 and product.average_rating < 3 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 3.5 %}-o{% elif product.average_rating >= 3.5 and product.average_rating < 4 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                         <i class="fa fa-star{% if product.average_rating < 4.5 %}-o{% elif product.average_rating >= 4.5 and product.average_rating < 5 %}-half-o {% endif %}"
+                                            aria-hidden="true"></i>
+                                    </span>
+                                    <span class="spr-badge-caption">{{ reviews_count }} reviews</span></a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="product-single__description rte">
+                            <b>Brand: </b>{{ product.brand }}<br>
+                            <b>Category: </b>{{ product.category }}<br>
+                            <b>Description General: </b><br>
+                            {{ product.description | safe }}
+                        </div>
+                        {% if product.variant == 'Size-Color' %}
+                        {% include 'store/color-size-variation.html' %}
+                        {% elif product.variant == 'Size' %}
+                        {% include 'store/size-variation.html' %}
+                        {% elif product.variant == 'Color' %}
+                        {% include 'store/only-color-variation.html' %}
+                        {% endif %}
+                        {% if product.variant != 'None' %}
+                        {% include 'store/add-cart-variation.html' %}
+                        {% else %}
+                        {% include 'store/add-cart.html' %}
+                        {% endif %}
+                        <div class="display-table shareRow">
+                            <div class="display-table-cell medium-up--one-third">
+                                {% if user.is_authenticated %}
+                                    <div class="wishlist-btn mt-2">
+                                        {% if wishlist %}
+                                        {% for wish in wishlist %}
+                                        {% if wish.product == product %}
+                                        <a class="wishlist add-to-wishlist" data-product="{{ product.id }}" href="#" aria-hidden="true">
+                                            <i class="icon anm anm-heart"></i><span>Your Wishlist</span></a>
+                                        </a>
+                                        {% else %}
+                                        <a class="wishlist add-to-wishlist" href="#" data-product="{{ product.id }}" title="Add to Wishlist"><i
+                                            class="icon anm anm-heart-l" aria-hidden="true"></i>
+                                        <span>Your Wishlist</span></a>
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% else %}
+                                        <a class="wishlist add-to-wishlist" href="#" data-product="{{ product.id }}" title="Add to Wishlist"><i
+                                            class="icon anm anm-heart-l" aria-hidden="true"></i>
+                                        <span>Your Wishlist</span></a>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="display-table-cell text-right">
+                                <div class="social-sharing">
+                                    <a target="_blank" href="{{ product.brand.facebook }}"
+                                       class="btn btn--small btn--secondary btn--share share-facebook"
+                                       title="Share on Facebook">
+                                        <i class="fa fa-facebook-square" aria-hidden="true"></i> <span
+                                            class="share-title"
+                                            aria-hidden="true">Share</span>
+                                    </a>
+                                    <a target="_blank" href="{{ product.brand.telegram }}"
+                                       class="btn btn--small btn--secondary btn--share share-twitter"
+                                       title="Search on Telegram">
+                                        <i class="fa fa-telegram" aria-hidden="true"></i> <span class="share-title"
+                                                                                               aria-hidden="true">Telegram</span>
+                                    </a>
+                                    
+                                    <a target="_blank" href="{{ product.brand.instagram }}"
+                                       class="btn btn--small btn--secondary btn--share share-instagram"
+                                       title="Pin on Instagram">
+                                        <i class="fa fa-instagram" aria-hidden="true"></i> <span class="share-title"
+                                                                                                 aria-hidden="true">Instagram</span>
+                                    </a>
+                                    <a target="_blank" href="{{ product.brand.user.email }}" class="btn btn--small btn--secondary btn--share share-pinterest"
+                                       title="Share by Email" target="_blank">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i> <span class="share-title"
+                                                                                                aria-hidden="true">Email</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include 'store/product-tabs.html' %}
+            </div>
+        </div>
+        {% include 'store/related-products.html' %}
+    </div>
+</div>
+<!--#ProductSection-product-template-->
+
+</div>
+<!--MainContent-->
+
+{% endblock %}

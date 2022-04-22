@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main class="container my-4">
+    <!-- Featured Products -->
+    <h2 class="my-4 border-bottom pb-1">My Orders</h2>
+    <div class="row">
+        {% include 'includes/dashboard_sidebar.html' %}
+        <div class="col-md-9">
+            {% if orders %}
+            <div class="table-responsive">
+                <table class="table-bordered table">
+                    <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Shipping Address</th>
+                        <th>Products Order</th>
+                        <th>Order Total</th>
+                        <th>Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td><a href="{% url 'order_detail' order.order_number %}" class="btn btn-sm btn-dark">
+                            {{ order.order_number }}</a>
+                        </td>
+                        <td>{{ order.shipping_address }}</td>
+                        <td>
+                            {% for products in order.get_ordersProducts_all %}
+                            <li class="ml-2"><a href="{{ products.variations.get_url }}"><b>{{products.product.name}}</b><br>
+                                {% if products.variations.color.name %}
+                                Color: {{products.variations.color.name}}<br>
+                                {% endif %}
+                                {% if products.variations.size.name %}
+                                Size: {{products.variations.size.name}}</a><br></li>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>${{ order.order_total }}</td>
+                        <td>{{ order.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="container text-center">
+                <h4>You dont have orders yeat</h4><br>
+                <h6>Please go to the <a href="{% url 'store' %}">Shop</a></h6>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

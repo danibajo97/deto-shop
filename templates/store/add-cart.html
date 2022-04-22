@@ -1,0 +1,84 @@
+{% load static %}
+<div>
+<form method="post" data-post-url="{% url 'add_cart' product.id %}" id="add-cart-variation"
+      accept-charset="UTF-8" class="product-form product-form-product-template hidedropdown"
+      enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="variantid" id="variantid" value="{{ product.id }}">
+    <div class="prInfoRow ml-2">
+        {% if product.get_variation.stock < 5 %}
+            <div id="quantity_message" class="mt-2">Hurry! Only <span
+                class="items">{{variant.stock}}</span> left in stock.
+            </div>
+        {% endif %}
+        <br>
+        <div class="product-stock">
+            {% if product.get_variation.stock %}
+            <span class="instock">In Stock</span>
+            {% else %}
+            <span class="outstock">Unavailable</span>
+            {% endif %}
+        </div>
+        <p class="product-single__price product-single__price-product-template">
+            {% if product.get_variation.discount_price %}
+            <s id="ComparePrice-product-template"><span class="money">${{product.get_variation.price}}</span></s>
+            <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
+                    <span id="ProductPrice-product-template"><span class="money">${{product.get_variation.discount_price}}</span></span>
+                </span>
+                <span class="discount-badge"> <span class="devider">|</span>&nbsp;
+                    <span>You Save</span>
+                    <span id="SaveAmount-product-template" class="product-single__save-amount">
+                    <span class="off">(<span>{{product.get_variation.discount_percentage}}</span>%)</span>
+                </span>  
+            {% else %}
+            <span class="product-price__price product-price__price-product-template product-price__sale product-price__sale--single">
+                <span id="ProductPrice-product-template"><span
+                        class="money">${{product.get_variation.price}}</span></span>
+            </span>
+            {% endif %}
+            <p>{{product.get_variation.description | safe}} </p>
+        </p><br>
+    </div>
+    
+    <!-- Product Action -->
+    <div class="product-action clearfix" id="show-add">
+        <div class="wrapQtyBtn mr-2">
+            <div class="qtyField">
+                <a class="qtyBtn minus" href="javascript:void(0);"><i class="fa anm anm-minus-r" aria-hidden="true"></i></a>
+                <input type="text" id="Quantity" name="quantity" value="1" class="product-form__input qty" disabled>
+                <a class="qtyBtn plus" href="javascript:void(0);"><i class="fa anm anm-plus-r" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="product-form__item--submit">
+            <button type="submit" id="add"
+                    class="btn product-form__cart-submit">
+                <span>Add to cart</span>
+            </button>
+        </div>
+    </div>
+    <!-- End Product Action -->
+</form>
+<!-- Including Jquery -->
+<script src="{% static 'js/vendor/jquery-3.3.1.min.js' %}"></script>
+
+<script>
+    function qnt_incre() {
+        $(".qtyBtn").on("click", function() {
+            var qtyField = $(this).parent(".qtyField"),
+                oldValue = $(qtyField).find(".qty").val(),
+                newVal = 1;
+
+            if ($(this).is(".plus")) {
+                newVal = parseInt(oldValue) + 1;
+            } else if (oldValue > 1) {
+                newVal = parseInt(oldValue) - 1;
+            }
+            if (newVal <= {{product.get_variation.stock}}){
+                $(qtyField).find(".qty").val(newVal); 
+            }
+        });
+    }
+    qnt_incre();
+
+    
+</script>
