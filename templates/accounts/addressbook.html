@@ -3,8 +3,8 @@
 {% block content %}
 <main class="container my-4">
     <!-- Featured Products -->
-    <h2 class="my-4 border-bottom pb-1">Address Book <a href="{% url 'add_address' %}"
-        class="pull-right"><i class="fa fa-plus"></i> Add</a></h2>
+    <h2 class="my-4 border-bottom pb-1">Libreta de direcciones <a href="{% url 'add_address' %}"
+        class="pull-right"><i class="fa fa-plus"></i> Añadir</a></h2>
     <div class="row">
         {% include 'includes/dashboard_sidebar.html' %}
         <div class="col-md-9">
@@ -14,7 +14,7 @@
                 <div class="col-md-4">
                     <div class="card mb-3 {% if add.status %}border-secondary shadow{% endif %} address{{add.id}} address">
                         <div class="card-body">
-                            <h5>Address</h5>
+                            <h5>Dirección</h5>
                             <p class="card-text">{{add.full_address}}</p>
                         </div>
                         {% if add.status %}
@@ -48,8 +48,8 @@
             </div>
             {% else %}
             <div class="container text-center">
-                <h4>You dont have address yeat</h4><br>
-                <h6>Please create one <a href="{% url 'add_address' %}">Here</a></h6>
+                <h4>No tiene ninguna dirección</h4><br>
+                <h6>Por favor, cree una <a href="{% url 'add_address' %}">aquí</a></h6>
             </div>
             {% endif %}
         </div>

@@ -2,13 +2,13 @@
 
 {% block content %}
 <main class="container my-4">
-    <h2 class="my-4 border-bottom pb-1">Update Address</h2>
+    <h2 class="my-4 border-bottom pb-1">Actualizar dirección</h2>
     <div class="row">
         {% include 'includes/dashboard_sidebar.html' %}
         <main class="col-md-9">
             <article class="card">
                 <header class="card-header">
-                    <strong class="d-inline-block mr-3">Update your Address</strong>
+                    <strong class="d-inline-block mr-3">Actualice su dirección</strong>
                 </header>
                 <div class="card-body">
                     <div class="row">
@@ -17,53 +17,53 @@
                                 {% csrf_token %}
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Street Address</label>
+                                        <label>Dirección</label>
                                         {{ form.street_address }}
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Aparment Address</label>
+                                        <label>Dirección (opcional)</label>
                                         {{ form.apartment_address }}
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>City</label>
+                                        <label>Ciudad</label>
                                         {{ form.city }}
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>State</label>
+                                        <label>Provincia</label>
                                         {{ form.state }}
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Country</label>
+                                        <label>País</label>
                                         {{ form.country }}
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Zip Code</label>
+                                        <label>Código Postal</label>
                                         {{ form.zip }}
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Phone Number</label>
+                                        <label>Teléfono</label>
                                         {{ form.phone_number }}
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Address Note</label>
+                                        <label>Observación</label>
                                         {{ form.note_address }}
                                     </div>
                                 </div>
                                 <fieldset>
                                     <div class="form-group form-check col-md-12 col-lg-12 col-xl-12">
                                         <label class="form-check-label padding-15px-left">
-                                            {{form.status}}<strong>Activated this address?</strong>
+                                            {{form.status}}<strong>¿Activar esta dirección?</strong>
                                         </label>
                                     </div>
                                 </fieldset>
                                 <input type="submit" value="save" class="btn btn-primary">
-                                <a class="btn btn-primary" href="{% url 'my_addressbook'%}">Cancel</a>
+                                <a class="btn btn-primary" href="{% url 'my_addressbook'%}">Cancelar</a>
                             </form>
                         </div>
                     </div> <!-- row.// -->

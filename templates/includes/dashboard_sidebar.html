@@ -2,24 +2,24 @@
     <!--   SIDEBAR   -->
     <div class="list-group">
         <a class="list-group-item {% if '/accounts/dashboard/' == request.path %} active {% endif %}"
-           href="{% url 'dashboard' %}"> Dashboard </a>
+           href="{% url 'dashboard' %}"> Panel de administración </a>
         <a class="list-group-item {% if '/accounts/my_orders/' == request.path %} active {% endif %}"
-           href="{% url 'my_orders' %}"> My orders </a>
+           href="{% url 'my_orders' %}"> Mis órdenes </a>
         <a class="list-group-item {% if '/accounts/my_wishlist/' == request.path %} active {% endif %}"
-           href="{% url 'my_wishlist' %}">Wishlist</a>
+           href="{% url 'my_wishlist' %}">Lista de deseos</a>
         {% comment %} <a class="list-group-item {% if '/accounts/compare/' == request.path %} active {% endif %}"
-           href="{% url 'compare' %}">Compare</a> {% endcomment %}
+           href="{% url 'compare' %}">Comparar</a> {% endcomment %}
         <a class="list-group-item {% if '/accounts/my_reviews/' == request.path %} active {% endif %}"
-           href="{% url 'my_reviews' %}">Reviews</a>
+           href="{% url 'my_reviews' %}">Revisiones</a>
         <a class="list-group-item {% if '/accounts/edit_profile/' == request.path %} active {% endif %}"
-           href="{% url 'edit_profile' %}"> Edit profile </a>
+           href="{% url 'edit_profile' %}"> Editar perfil </a>
         <a class="list-group-item {% if '/address/my_addressbook/' == request.path %} active {% endif %}"
-           href="{% url 'my_addressbook' %}">Address Book</a>
+           href="{% url 'my_addressbook' %}">Libreta de direcciones</a>
         <a class="list-group-item {% if '/accounts/change_password/' == request.path %} active {% endif %}"
-           href="{% url 'change_password' %}"> Change password </a>
+           href="{% url 'change_password' %}"> Cambiar contraseña </a>
     </div>
     <br>
-    <a class="btn btn-light btn-block mb-4" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span>
+    <a class="btn btn-light btn-block mb-4" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Salir</span>
     </a>
     <!--   SIDEBAR .//END   -->
 </aside>

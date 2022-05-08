@@ -3,7 +3,7 @@
 {% block content %}
 <main class="container my-4">
     <!-- Featured Products -->
-    <h2 class="my-4 border-bottom pb-1">My Orders</h2>
+    <h2 class="my-4 border-bottom pb-1">Mis órdenes</h2>
     <div class="row">
         {% include 'includes/dashboard_sidebar.html' %}
         <div class="col-md-9">
@@ -12,11 +12,11 @@
                 <table class="table-bordered table">
                     <thead>
                     <tr>
-                        <th>Order #</th>
-                        <th>Shipping Address</th>
-                        <th>Products Order</th>
-                        <th>Order Total</th>
-                        <th>Date</th>
+                        <th>Orden #</th>
+                        <th>Dirección de envío</th>
+                        <th>Productos</th>
+                        <th>Total de la orden</th>
+                        <th>Fecha</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -46,8 +46,8 @@
             </div>
             {% else %}
             <div class="container text-center">
-                <h4>You dont have orders yeat</h4><br>
-                <h6>Please go to the <a href="{% url 'store' %}">Shop</a></h6>
+                <h4>Aún no tiene órdenes</h4><br>
+                <h6>Por favor, vaya a la <a href="{% url 'store' %}">Tienda</a></h6>
             </div>
             {% endif %}
         </div>

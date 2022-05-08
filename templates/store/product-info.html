@@ -6,14 +6,14 @@
     <input type="hidden" name="variantid" id="variantid" value="{{ product.id }}">
     <div class="prInfoRow ml-2">
         {% if product.stock < 5 %}
-            <div id="quantity_message" class="mt-2">Hurry! Only <span
-                class="items">{{product.stock}}</span> left in stock.
+            <div id="quantity_message" class="mt-2">¡Aprovecha! Solo <span
+                class="items">{{product.stock}}</span> en stock.
             </div>
         {% endif %}
         <br>
         <div class="product-stock">
             {% if product.stock %}
-            <span class="instock">In Stock</span>
+            <span class="instock">En existencia</span>
             {% else %}
             <span class="outstock">Unavailable</span>
             {% endif %}

@@ -22,7 +22,7 @@
                             <!-- col-lg-6 start here -->
                             <div class="invoice-from">
                                 <ul class="list-unstyled text-right">
-                                    <li><strong>Invoiced To</strong></li>
+                                    <li><strong>Factura para </strong></li>
                                     <li>{{user.full_name}}</li>
                                     <li>{{order.shipping_address}}</li>
                                 </ul>
@@ -34,10 +34,10 @@
                             <div class="invoice-details mt25">
                                 <div class="well">
                                     <ul class="list-unstyled mb0">
-                                        <li><strong>Order: </strong>{{order.order_number}}</li>
-                                        <li><strong>Transaction ID: </strong> {{transactionID}}</li>
-                                        <li><strong>Order Date: </strong> {{order.created_at}}</li>
-                                        <li><strong>Status: </strong> {{order.payment.status}}</li>
+                                        <li><strong>Orden: </strong>{{order.order_number}}</li>
+                                        <li><strong>Transacción ID: </strong> {{transactionID}}</li>
+                                        <li><strong>Fecha: </strong> {{order.created_at}}</li>
+                                        <li><strong>Estado: </strong> {{order.payment.status}}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -47,9 +47,9 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th class="per70 text-center">Ordered Products</th>
-                                            <th class="per5 text-center">Qty</th>
-                                            <th class="per25 text-center">COST</th>
+                                            <th class="per70 text-center">Productos</th>
+                                            <th class="per5 text-center">Cant.</th>
+                                            <th class="per25 text-center">Costo</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -63,7 +63,7 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <th colspan="2" class="text-right">Grand Total:</th>
+                                            <th colspan="2" class="text-right">Total:</th>
                                             <th class="text-center">${{grand_total}}</th>
                                         </tr>
                                         </tfoot>
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="invoice-footer mt25">
-                                <p class="text-center">Thank you for shopping with us!</p>
+                                <p class="text-center">¡Gracias por comprar con nosotros!</p>
                             </div>
                         </div>
                         <!-- col-lg-12 end here -->

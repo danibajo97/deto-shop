@@ -3,7 +3,7 @@
 {% block content %}
 <main class="container my-4">
     <!-- Featured Products -->
-    <h2 class="my-4 border-bottom pb-1">Reviews Items</h2>
+    <h2 class="my-4 border-bottom pb-1">Revisar artículos</h2>
     <div class="row">
         {% include 'includes/dashboard_sidebar.html' %}
         <div class="col-md-9">
@@ -12,10 +12,10 @@
                 <table class="table-bordered table">
                     <thead>
                     <tr>
-                        <th>Title</th>
-                        <th>Subject</th>
-                        <th>ReviewRating</th>
-                        <th>Created Date</th>
+                        <th>Título</th>
+                        <th>Asunto</th>
+                        <th>Calificación</th>
+                        <th>Fecha</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -56,7 +56,7 @@
             </div>
             {% else %}
             <div class="container text-center">
-                <h4>You dont have reviews yeat</h4><br>
+                <h4>Aún no tiene comentarios</h4><br>
             </div>
             {% endif %}
         </div>

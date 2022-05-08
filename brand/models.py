@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.html import mark_safe
 from accounts.models import Account
+from django.forms import model_to_dict
 
 
 # Brand
@@ -28,14 +29,15 @@ class Brand(models.Model):
         return reverse('products_by_brand', args=[self.slug])
 
     def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name}, Brand: {self.title}'
+        # return f'{self.user.first_name} {self.user.last_name}, Brand: {self.title}'
+        return self.title
 
     def image_tag(self):
         return mark_safe('<img src="%s" width="50" height="50" />' % self.image.url)
 
     def get_image(self):
         if self.image:
-            return '{}{}'.format(MEDIA_URL, self.image)
+            return '{}{}'.format(settings.MEDIA_URL, self.image)
         
     def toJSON(self):
         item = model_to_dict(self)
