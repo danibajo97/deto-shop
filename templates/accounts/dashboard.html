@@ -4,13 +4,13 @@
 <!-- ========================= SECTION CONTENT ========================= -->
 
 <div class="container">
-    <h2 class="my-4 border-bottom pb-1">Dashboard</h2>
+    <h2 class="my-4 border-bottom pb-1">Panel de administración</h2>
     <div class="row">
         {% include 'includes/dashboard_sidebar.html' %}
         <div class="col-md-4">
             <article class="card">
                 <header class="card-header">
-                    <strong class="d-inline-block mr-3">Logged in as:</strong>
+                    <strong class="d-inline-block mr-3">Registrado como:</strong>
                     <span>{{ user.first_name }} {{ user.last_name }}</span>
                 </header>
                 <div class="card-body">
@@ -24,9 +24,9 @@
                     </div>
                     <div class="card" style="text-align: center;">
                         <div class="card-body">
-                            <h5 class="card-title">Total Orders</h5>
+                            <h5 class="card-title">Total de órdenes</h5>
                             <h4>{{ orders_count }}</h4>
-                            <a href="{% url 'my_orders' %}">View Orders</a>
+                            <a href="{% url 'my_orders' %}">Ver las órdenes</a>
                         </div>
                     </div>
                 </div> <!-- card-body .// -->
@@ -36,7 +36,7 @@
             <!-- Featured Products -->
             <article class="card">
                 <header class="card-header">
-                    <strong class="d-inline-block mr-3">Orders by Month:</strong>
+                    <strong class="d-inline-block mr-3">Ordenes por meses:</strong>
                 </header>
                 <div class="card-body">
                     <canvas id="myChart"></canvas>

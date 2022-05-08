@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <h2 class="my-4 border-bottom pb-1">Compare Items</h2>
+    <h2 class="my-4 border-bottom pb-1">Comparar artículos</h2>
     <div class="row">
         {% include 'includes/dashboard_sidebar.html' %}
         <div class="col-9 col-sm-12 col-md-9 col-lg-9 main-col">
@@ -35,7 +35,7 @@
                         </tr>
                         <tr>
                             {% for product in products%}
-                            <th>Product Description</th>
+                            <th>Descripción del Producto</th>
                             {% endfor %}
                         </tr>
                         <tr>
@@ -47,16 +47,16 @@
                         </tr>
                         <tr>
                             {% for product in products%}
-                            <th>Availability</th>
+                            <th>Disponibilidad</th>
                             {% endfor %}
                         </tr>
                         <tr>
                             {% for product in products%}
                             <td valign="middle" class="available-stock">
                             {% if product.get_variation.stock%}
-                              <p>In stock</p>
+                              <p>En existencia</p>
                               {% else %}
-                              <p>Not in stock</p>
+                              <p>Agotado</p>
                               {% endif %}
                             </td>
                             {% endfor %}
@@ -64,7 +64,7 @@
                         <tr>
                             {% for product in products%}
                             <td valign="middle" align="center">
-                                <a href="{{product.get_url}}" title="View Details" class="btn btn-solid">View Details</a>
+                                <a href="{{product.get_url}}" title="View Details" class="btn btn-solid">Ver detalles</a>
                             </td>
                             {% endfor %}
                         </tr>
@@ -73,8 +73,8 @@
                 </div>
                 {% else %}
                 <div class="container text-center">
-                    <h4>You dont have products to compare yeat</h4><br>
-                    <h6>Please add one <a href="{% url 'store' %}">Here</a></h6>
+                    <h4>No tiene aún productos para comparar</h4><br>
+                    <h6>Por favor, añada uno <a href="{% url 'store' %}">aquí</a></h6>
                 </div>
                 {% endif %}
             </div>                  

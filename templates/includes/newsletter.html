@@ -5,17 +5,17 @@
     <a class="btn closepopup"><i class="icon icon anm anm-times-l"></i></a>
     <!-- Modal content-->
     <div class="display-table splash-bg">
-      <div class="display-table-cell width40"><img src="{% static 'images/newsletter-img.jpg' %}" alt="Join Our Mailing List" title="Join Our Mailing List" /> </div>
+      <div class="display-table-cell width40"><img src="{% static 'images/newsletter-img.jpg' %}" alt="Unase a nuestra lista de correo" title="Join Our Mailing List" /> </div>
       <div class="display-table-cell width60 text-center">
         <div class="newsletter-left">
-          <h2>Join Our Mailing List</h2>
-          <p>Sign Up for our exclusive email list and be the first to know about new products and special offers</p>
+          <h2>Unase a nuestra lista de correo</h2>
+          <p>Suscríbase a nuestra exclusiva lista de correo y sea el primero en saber de nuestros nuevos productos y nuestras ofertas especiales</p>
           <form action="{% url 'subscribe' %}" method="post">
             {% csrf_token %}
             <div class="input-group">
-              <input type="email" class="input-group__field newsletter__input" name="email" value="" placeholder="Email address" required="">
+              <input type="email" class="input-group__field newsletter__input" name="email" value="" placeholder="Dirección de correo electrónico" required="">
                   <span class="input-group__btn">
-                    <button type="submit" class="btn newsletter__submit" name="commit" id="subscribeBtn"> <span class="newsletter__submit-text--large">Subscribe</span> </button>
+                    <button type="submit" class="btn newsletter__submit" name="commit" id="subscribeBtn"> <span class="newsletter__submit-text--large">Suscribirse</span> </button>
                   </span>
               </div>
           </form>

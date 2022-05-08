@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-10 col-sm-8 col-md-5 col-lg-4">
-                <p class="phone-no"><i class="anm anm-phone-s"></i> +440 0(111) 044 833</p>
+                <p class="phone-no"><i class="anm anm-phone-s"></i> +53 42 22-5034</p>
             </div>
             <div class="col-sm-4 col-md-4 col-lg-4 d-none d-lg-none d-md-block d-lg-block">
                 <div class="text-center"><p class="top-header_middle-text"> De To' Shop</p></div>
@@ -14,8 +14,8 @@
                 <span class="user-menu d-block d-lg-none"><i class="anm anm-user-al" aria-hidden="true"></i></span>
                 <ul class="customer-links list-inline">
                     {% if user.id is None %}
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'register' %}">Create Account</a></li>
+                    <li><a href="{% url 'login' %}">Registrarse</a></li>
+                    <li><a href="{% url 'register' %}">Crear Cuenta</a></li>
                     {% else %}
                     <div class="language-dropdown">
                         {% if user.profile_picture%}
@@ -23,20 +23,20 @@
                         {% else %}
                             <img class="mr-2" src="{% static 'img/profile/index.png' %}" style="height: 20px; border-radius: 50%">
                         {% endif %}
-                        <span class="language-dd">My Account</span>
+                        <span class="language-dd">Mi Cuenta</span>
                         <ul id="language" class="text-left">
-                            <li><a href="{% url 'dashboard' %}">My Account</a></li>
-                            <li><a href="{% url 'my_orders' %}">My Orders</a></li>
-                            <li><a href="{% url 'my_wishlist' %}">My Wishlist</a></li>
-                            {% comment %} <li><a href="{% url 'compare' %}">Compare</a></li> {% endcomment %}
-                            <li><a href="{% url 'my_reviews' %}">My Reviews</a></li>
-                            <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
-                            <li><a href="{% url 'my_addressbook' %}">My Address Book</a></li>
-                            <li><a href="{% url 'change_password' %}">Change Password</a></li>
-                            <li><a href="{% url 'register' %}">Create An Account</a></li>
-                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                            <li><a href="{% url 'dashboard' %}">Mi Cuenta</a></li>
+                            <li><a href="{% url 'my_orders' %}">Mis órdenes</a></li>
+                            <li><a href="{% url 'my_wishlist' %}">Mi lista de deseos</a></li>
+                            {% comment %} <li><a href="{% url 'compare' %}">Comparar</a></li> {% endcomment %}
+                            <li><a href="{% url 'my_reviews' %}">Mis comentarios</a></li>
+                            <li><a href="{% url 'edit_profile' %}">Editar perfil</a></li>
+                            <li><a href="{% url 'my_addressbook' %}">Direcciones y teléfono</a></li>
+                            <li><a href="{% url 'change_password' %}">Cambiar contraseña</a></li>
+                            <li><a href="{% url 'register' %}">Crear una cuenta</a></li>
+                            <li><a href="{% url 'logout' %}">Salir</a></li>
                         </ul>
-                        <a href="{% url 'logout' %}" class="text-uppercase">Logout</a>
+                        <a href="{% url 'logout' %}" class="text-uppercase">Salir</a>
                     </div>
                     {% endif %}
                 </ul>
@@ -52,7 +52,7 @@
         <div class="row align-items-center">
             <!--Desktop Logo-->
             <div class="logo col-md-2 col-lg-2 d-none d-lg-block">
-                <a href="index.html">
+                <a href="{% url 'home' %}">
                     <img src="{% static 'img/logo/deto-logo.jpg' %}" alt="DeTo Shop"
                          title="DeTo Shop" width="50"/>
                 </a>
@@ -68,18 +68,18 @@
                 <!--Desktop Menu-->
                 <nav class="grid__item" id="AccessibleNav"><!-- for mobile -->
                     <ul id="siteNav" class="site-nav medium center hidearrow">
-                        <li class="lvl1"><a href="{% url 'home' %}"><b>Home</b></a>
+                        <li class="lvl1"><a href="{% url 'home' %}"><b>Inicio</b></a>
                         </li>
-                        <li class="lvl1"><a href="{% url 'store' %}"><b>Store</b></a>
+                        <li class="lvl1"><a href="{% url 'store' %}"><b>Toda la tienda</b></a>
                         </li>
-                        <li class="lvl1 parent dropdown"><a href="#">Brands <i class="anm anm-angle-down-l"></i></a>
+                        <li class="lvl1 parent dropdown"><a href="#"><b>Tiendas</b><i class="anm anm-angle-down-l"></i></a>
                             <ul class="dropdown">
                                 {% for brand in brand_links %}
                                 <li><a href="{{ brand.get_url }}" class="site-nav">{{ brand.title }}</a></li>
                                 {% endfor %}
                             </ul>
                         </li>
-                        <li class="lvl1 parent dropdown"><a href="#">Categories <i class="anm anm-angle-down-l"></i></a>
+                        <li class="lvl1 parent dropdown"><a href="#"><b>Categorías</b><i class="anm anm-angle-down-l"></i></a>
                             <ul class="dropdown">
                                 {% recursetree category_tree %}
                                 {% if not node.is_leaf_node %}
@@ -93,15 +93,15 @@
                                 <li><a href="{{ node.get_url }}" class="site-nav">{{ node.name }}</a></li>
                                 {% endif %}
                                 {% endrecursetree %}
-                                <li><a href="about-us.html" class="site-nav">About Us <span
-                                        class="lbl nm_label1">New</span> </a></li>
+                                <li><a href="about-us.html" class="site-nav">Acerca de <span
+                                        class="lbl nm_label1">Nuevo</span> </a></li>
                             </ul>
                         </li>
-                        <li class="lvl1"><a href="{% url 'contact_me' %}"><b>Contact Us</b></a>
+                        <li class="lvl1"><a href="{% url 'contact_me' %}"><b>Contactar</b></a>
                         </li>
-                        <li class="lvl1"><a href="{% url 'blog' %}"><b>Blog</b></a>
-                        </li>
-                        <li class="lvl1"><a href="{% url 'about_us' %}"><b>About Us</b></a>
+{#                        <li class="lvl1"><a href="{% url 'blog' %}"><b>Blog</b></a>#}
+{#                        </li>#}
+                        <li class="lvl1"><a href="{% url 'about_us' %}"><b>Acerca de</b></a>
                         </li>
                     </ul>
                 </nav>
@@ -110,9 +110,9 @@
             <!--Mobile Logo-->
             <div class="col-6 col-sm-6 col-md-6 col-lg-2 d-block d-lg-none mobile-logo">
                 <div class="logo">
-                    <a href="index.html">
-                        <img src="assets/images/logo.svg" alt="Belle Multipurpose Html Template"
-                             title="Belle Multipurpose Html Template"/>
+                    <a href="{% url 'home' %}">
+                        <img src="assets/images/logo.svg" alt="DeTo Shop"
+                             title="DeTo Shop | Inicio"/>
                     </a>
                 </div>
             </div>
@@ -158,8 +158,8 @@
                             <div class="total-in text-center">
                                 <img src="{% static 'img/logo/cart-empty.png' %}" alt="Empty Cart Picture"
                                  width="50" height="50"><br>
-                                <span class="label"><b>There is no products in your cart</b></span><br>
-                                <span class="label">Please go to the Shop and add some products</span>
+                                <span class="label"><b>No hay productos en su carrito</b></span><br>
+                                <span class="label">Por favor, vaya a la tienda y añada algunos productos</span>
                             </div>
                             <hr>
                             {% endif %}
